@@ -1,0 +1,91 @@
+#https://docs.docker.com/compose/compose-file/
+version: "3.8"
+services:
+  webapp:
+    build:
+      context: . # a directory containing a Dockerfile and manage.py
+    command: uvicorn --workers 3 --host 0.0.0.0 --port 8080 --reload hSpace.asgi:application # python manage.py runserver 0.0.0.0:8080
+    volumes:
+      - .:/usr/src/hSpace.com
+      - static:/usr/src/hSpace.com/static
+      - media:/usr/src/hSpace.com/media
+    ports:
+      - 8080:8080
+    expose:
+      - 8080 #For linked service use only
+    environment:
+      - .env
+    depends_on: # Set webapp start after database service running
+      - es01
+      - es02
+      - es03
+    networks:
+      - common
+
+  es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
+    container_name: es01
+    environment:
+      - node.name=es01
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es02,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - data01:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - common
+  es02:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
+    container_name: es02
+    environment:
+      - node.name=es02
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es01,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - data02:/usr/share/elasticsearch/data
+    networks:
+      - common
+  es03:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
+    container_name: es03
+    environment:
+      - node.name=es03
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es01,es02
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - data03:/usr/share/elasticsearch/data
+    networks:
+      - common
+
+volumes:
+  static:
+  media:
+  data01:
+  data02:
+  data03:
+
+networks:
+  common:
+    driver: bridge

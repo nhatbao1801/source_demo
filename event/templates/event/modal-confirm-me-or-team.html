@@ -1,0 +1,35 @@
+{% extends 'base/modal/base-modal.html' %}
+{% load static contest_tags %}
+{% block modal-id %}me-or-team-event-id{% endblock %}
+
+{% block modal-title %}Xác nhận tôi hay team tham gia{% endblock %}
+
+{% block modal-form-action %}{% endblock %}
+
+{% block method %}{% endblock %}
+
+{% block csrf %}{% csrf_token %}{% endblock %}
+
+{% block modal-form %}
+    <input type="text" class="event_id" value="{{ event.id }}" hidden>
+    <input type="text" class="current_owner_id" value="{{ event.get_owner.id }}" hidden>
+    <div class="row bg-white mb-4 form-group">
+        <label for="">Chọn người tham gia</label>
+        <select class="form-control select_team">
+            <option value="1">Tôi</option>
+            <option value="2">Team của tôi</option>
+        </select>
+    </div>
+    <div class="row bg-white mb-4 form-group my-team d-none">
+        <label for="">Chọn team: </label>
+        <select class="form-control select-my-team">
+            {% for team in user.team_set.all %}
+                <option value="{{ team.id }}">{{ team.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+{% endblock %}
+
+{% block modal-submit-type %}button{% endblock %}
+{% block modal-action-class %}me-or-team-submit{% endblock %}
+{% block modal-submit-btn-name %}Submit{% endblock %}

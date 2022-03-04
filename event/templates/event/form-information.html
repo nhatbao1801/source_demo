@@ -1,0 +1,90 @@
+{% load user_filter %}
+<form class="user-profile-ov">
+    <div class="row mb-4 justify-content-center">
+        <h3 style="font-size:20px;">Thông tin sự kiện</h3>
+    </div>
+    {% csrf_token %}
+    <div class="form-row pt-2">
+        <div class="form-group col-md-12">
+            <label for="title">Tiêu đề</label>
+            <input name="name" type="text" value="{{ event.name }}" class="form-control mt-2"
+                   id="name"
+                   placeholder="Tiêu đề" required>
+        </div>
+    </div>
+    <label class="lead mb-2" for="city_id">
+        Thời gian
+    </label>
+    <div class="row">
+        <div class="col-6 form-group">
+            <label class="">Thời gian bắt đầu</label>
+            <input class="form-control flatpickr" id="st_date" type="text" required value="{{ event.from_date|date:'Y-m-d H:i' }}">
+        </div>
+        <div class="col-6 form-group">
+            <label class="">Thời gian kết thúc</label>
+            <input class="form-control flatpickr" type="text" id="en_date" required value="{{ event.to_date|date:'Y-m-d H:i' }}">
+        </div>
+    </div>
+    <div class="form-group my-4">
+        <label for="street_address">Địa chỉ</label>
+        <input type="text" value="{{ event.street_address }}" class="form-control mt-2" id="street_address"
+               placeholder="street address" name="street_address">
+    </div>
+    <div class="form-group my-3">
+        <input name="city_id" id="city_id" hidden value="{{ event.city_id }}">
+        <label for="street_address">Thành phố</label>
+        <div id="city-filter" style="min-width: 90%"
+             class="selectivity-input"></div>
+        <div class="ml-3 mt-2 text-danger error_city"></div>
+    </div>
+
+    <div class="form-group my-4">
+        <label for="tagline">Tags</label>
+        <input name="tagline" value="{{ event.tagline }}" placeholder="#tagsa #tagsb"
+               class="form-control tagsinput" id="tagline">
+    </div>
+    <div class="form-group my-4">
+        <label for="description">Nội dung</label>
+        <input name="description" value="{{ event.description }}" class="form-control" id="description" hidden>
+        <div id="editor_des" class="" style="min-height: 200px">
+            {{ event.description|safe }}
+        </div>
+    </div>
+    <div class="form-group my-4">
+        <label for="schedule">Thông tin sự kiện</label>
+        <input name="schedule" value="{{ event.schedule }}" class="form-control" id="schedule" hidden>
+        <div id="editor_schedule" class="" style="min-height: 200px">
+            {{ event.schedule|safe }}
+        </div>
+    </div>
+    <div id="error-custom-url" class="alert alert-danger info animate__heartBeat" hidden>Đã tồn tại url</div>
+    <div class="form-group my-4" id="form-custom-url">
+        <label for="inputCustomLink">URL
+            <span class="bg-success text-light ml-2">
+                hspaces.net/event/profile
+            </span>/
+            <span id="myurl">{{ event.url }}</span>
+        </label>
+        <input type="text" name="custom-url" value="{{ event.url }}" class="form-control mt-2" id="inputCustomLink"
+               placeholder="Link" required>
+    </div>
+    <script>
+        let customLink = document.getElementById("inputCustomLink");
+        customLink.addEventListener("keyup", (event) => {
+            document.getElementById("myurl").innerText = customLink.value;
+            let xhr = new XMLHttpRequest();
+            xhr.open("GET", "{% url 'event:event-check-custom-url' %}?event-id={{ event.id }}&custom-url=" + customLink.value, true);
+            xhr.onload = function () {
+                let answer = JSON.parse(this.response);
+                if (answer.status === "existed") {
+                    document.getElementById("error-custom-url").removeAttribute("hidden");
+                } else {
+                    document.getElementById("error-custom-url").setAttribute("hidden", "");
+                }
+            };
+            xhr.send();
+        })
+    </script>
+
+    <button type="button" class="btn btn-primary mt-2 float-right border-0 rounded-0 _save_event">Cập nhật</button>
+</form>

@@ -1,0 +1,22 @@
+{% extends 'base/modal/base-modal.html' %}
+
+{% block modal-id %}update-link-page-cover{% endblock %}
+
+{% block modal-title %}Thêm URL video{% endblock %}
+
+{% block modal-form-action %}{% url 'event:event-upload-video-cover' %}{% endblock %}
+
+{% block modal-form %}
+    <input name="currentOwnerId" value="{{ event.id }}" hidden>
+    <div class="input-group mb-2">
+        <div class="input-group-prepend">
+            <div class="input-group-text">
+                <i class="fa fa-youtube" aria-hidden="true"></i>
+                Youtube
+            </div>
+        </div>
+        <input type="text" name="url" class="form-control" placeholder="https://youtu.be/GD2wCS2xwWQ">
+    </div>
+{% endblock %}
+
+{% block modal-submit-btn-name %}Thêm{% endblock %}

@@ -1,0 +1,1 @@
+web: gunicorn hSpace.wsgi --log-file -

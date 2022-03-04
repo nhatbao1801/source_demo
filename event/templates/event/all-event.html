@@ -1,0 +1,109 @@
+{% load user_filter %}
+{% load static humanize cloudinary %}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Các sự kiện{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    {% include 'base/gerneral-part/headcss.html' %}
+    {% block extra-css %}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/selectivity/selectivity-jquery.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/selectivity/selectivity.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/boostrap-slider/bootstrap-slider.css' %}">
+        <link rel="stylesheet" type="text/css"
+              href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+        <link rel="stylesheet" type="text/css" href="{% static 'event/css/style.css' %}">
+    {% endblock %}
+</head>
+<body>
+<div class="wrapper">
+    {% include 'base/header.html' %}
+    {% csrf_token %}
+    <main style="margin-top: 50px;" class="pb-2">
+        <div class="main-section">
+            <div class="container">
+                <div class="main-section-data shadow-sm">
+                    <div class="row bg-white p-5 justify-content-center">
+                        <div class="text-center">
+                            <h2>
+                                <strong class="text-uppercase">Sự kiện</strong>
+                            </h2>
+                            <p>Sự kiện quanh bạn...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <main style="" class="pt-0">
+        <div class="main-section">
+            <div class="container">
+                <div class="main-section-data shadow-sm">
+                    <div class="row">
+                        <div class="card col-lg-3 col-sm-12 pt-2">
+                            <h3 class="font-weight-light text-uppercase text-center">Các sự kiện gần bạn nhất</h3>
+                            <div class="row display-flex align-items-flex-start p-10 pt-2" id="id_list_event_near_me">
+
+                            </div>
+                        </div>
+                        <div class="card col-lg-9 col-sm-12 pt-2">
+                            <div class="row no-gutters">
+                                <div class="col-9">
+                                    <div class="input-group">
+                                        <input type="text" id="search-input" class="form-control"
+                                               placeholder="Tìm kiếm cuộc thi">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-default" type="submit">
+                                                <i class="glyphicon glyphicon-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-3 align-self-center"><span
+                                        id="result-num">4 kết quả</span></div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="row all-event">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+{% block modal %}
+    {% include 'base/modal/add-startup.html' %}
+    {% include 'base/modal/add-job.html' %}
+    {% include 'base/modal/add-deal.html' %}
+    {% include 'base/modal/add-contest.html' %}
+    {% include 'base/modal/add-fund.html' %}
+    {% include 'base/modal/add-challenge.html' %}
+    {% include 'base/modal/add-organization.html' %}
+    {% include 'base/modal/add-event.html' %}
+{% endblock %}
+
+{% include 'base/gerneral-part/bottomjs.html' %}
+
+{% block extra-js %}
+    <script type="text/javascript" src="{% static 'js/selectivity/selectivity-jquery.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/selectivity/selectivity.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/boostrap-slider/bootstrap-slider.js' %}"></script>
+    <script type="text/javascript" src="{% static 'lib/easy-number/easy-number-separator.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="{% static 'event/js/all-event.js' %}"></script>
+{% endblock %}
+
+<script>
+
+</script>
+</body>
+{% include 'base/footer.html' %}
+</html>

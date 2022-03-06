@@ -6,8 +6,8 @@ import cloudinary.api
 from django.db.models import Q
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
-
-from models import Event, Media
+from event.models.event import Event
+from event.models.media import Media
 
 
 @receiver(pre_delete, sender=Event)

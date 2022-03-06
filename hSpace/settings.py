@@ -4,11 +4,13 @@ Any change could be make things not working properly, so be careful with that
 """
 import os
 import platform
-import dj_database_url
 from datetime import timedelta
-from dotenv import load_dotenv
 from pathlib import Path
+
+import dj_database_url
 from django.utils.translation import gettext_lazy as _
+from dotenv import load_dotenv
+
 # from .extra_settings import (CKEDITOR_CONFIGS, SWAGGER_SETTINGS, REDOC_SETTINGS, ELASTICSEARCH_DSL)
 
 # Load our secret keys to use in development .env is being ignored in commit
@@ -67,8 +69,8 @@ INSTALLED_APPS = [
     # User created app
     'event.apps.EventConfig',
     'ckeditor',  # https://github.com/django-ckeditor/django-ckeditor#installation
-    'django_elasticsearch_dsl',  # https://elasticsearch-dsl.readthedocs.io/
-    'django_elasticsearch_dsl_drf',
+    # 'django_elasticsearch_dsl',  # https://elasticsearch-dsl.readthedocs.io/
+    # 'django_elasticsearch_dsl_drf',
 ]
 
 if os.environ.get('USE_S3', os.getenv('USE_S3')) == 'TRUE':
@@ -160,7 +162,7 @@ USE_TZ = True
 
 CSRF_USE_SESSIONS = True
 
-AUTH_USER_MODEL = 'main.User'
+# AUTH_USER_MODEL = 'event.User'
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 STATIC_URL = '/static/'

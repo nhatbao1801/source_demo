@@ -2,7 +2,7 @@ from django.contrib.humanize.templatetags import humanize
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from models.base import BaseModel
+from event.models.base import BaseModel
 
 
 class Comment(BaseModel):

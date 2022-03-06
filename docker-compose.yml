@@ -1,6 +1,7 @@
 version: "3.8"
 services:
   hspace-hshool:
+    restart: always
     build:
       context: .
     # command: uvicorn --workers 3 --host 0.0.0.0 --port 8005 --reload hSpace.asgi:application 
@@ -9,4 +10,27 @@ services:
     ports:
       - 8006:8006
     environment:
-      - .env
+      - SECRET_KEY='wvd@vj33_^^me@^6*et!1j0b&186itjigert^49k&yct0^b9ac'
+      - DEBUG=1
+      - PASSWORD='hinnox@2020'
+      - SENDGRID_API_KEY='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'
+      - EMAIL_PORT=587
+      - EMAIL_USE_SSL=False
+      - EMAIL_USE_TLS=True
+      - ALLOWED_HOSTS=127.0.0.1 localhost api.hspaces.net dev.api.hspaces.net 13.229.29.156
+      - DB_ENGINE=django.db.backends.postgresql
+      - DB_USER=hschool
+      - DB_NAME=hspace_biz_event
+      - DB_PASSWORD=1c2f7599f11330de0b8424745798813c11b4fef024abe947
+      - DB_HOST=52.220.194.250
+      - DB_PORT=5400
+      - ELASTICSEARCH_HOST=es01
+      - cloud_name='duca7llkq-hinnox'
+      - api_key='695392857168534'
+      - api_secret='Zjm1l3YIhZNoVIaZodntHX1YV3c'
+      - CLOUDINARY_URL='cloudinary://695392857168534:Zjm1l3YIhZNoVIaZodntHX1YV3c@duca7llkq-hinnox'
+      - USE_S3='FALSE'
+      - AWS_ACCESS_KEY_ID='AKIAVLADZRMD3YAPSU7P'
+      - AWS_SECRET_ACCESS_KEY='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'
+      - AWS_STORAGE_BUCKET_NAME ='hspace-s3'
+      - AWS_DEFAULT_ACL='public-read'

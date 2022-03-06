@@ -1,7 +1,6 @@
 from django_elasticsearch_dsl import Document, fields
 from django_elasticsearch_dsl.registries import registry
-
-from models.event import Event
+from event.models.event import Event
 
 
 # @registry.register_document

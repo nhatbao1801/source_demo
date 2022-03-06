@@ -1,14 +1,14 @@
 import django_js_reverse.views
 from django.conf.urls import url
+# from main.admin import admin_site
+from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from django.urls import path, include
+from django.urls import include, path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 from rest_framework.documentation import include_docs_urls
 from rest_framework.permissions import IsAdminUser
-
-from main.admin import admin_site
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -24,7 +24,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path('admin/', admin_site.urls),
+    path('admin/', admin.urls),
     path(
         'admin/password_reset/',
         auth_views.PasswordResetView.as_view(),

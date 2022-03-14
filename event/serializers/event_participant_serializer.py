@@ -6,8 +6,8 @@ from event.models.event_participant import EventParticipant
 
 class EventParticipantSerializer(serializers.ModelSerializer):
     event_info = serializers.SerializerMethodField()
-    user_info = serializers.SerializerMethodField()
-    team_info = serializers.SerializerMethodField()
+    # user_info = serializers.SerializerMethodField()
+    # team_info = serializers.SerializerMethodField()
 
     class Meta:
         model = EventParticipant
@@ -23,37 +23,37 @@ class EventParticipantSerializer(serializers.ModelSerializer):
             return None
         return EventOutSerializer(obj.event).data
 
-    def get_user_info(self, obj):
-        if not obj.user:
-            return None
-        return UserOutSerializer(obj.user).data
+    # def get_user_info(self, obj):
+    #     if not obj.user:
+    #         return None
+    #     return UserOutSerializer(obj.user).data
 
-    def get_team_info(self, obj):
-        if not obj.team:
-            return None
-        return TeamOutSerializer(obj.team).data
+    # def get_team_info(self, obj):
+    #     if not obj.team:
+    #         return None
+    #     return TeamOutSerializer(obj.team).data
 
 
 class EventOutParticipantSerializer(serializers.ModelSerializer):
     event_info = serializers.SerializerMethodField()
-    user_info = serializers.SerializerMethodField()
-    team_info = serializers.SerializerMethodField()
+    # user_info = serializers.SerializerMethodField()
+    # team_info = serializers.SerializerMethodField()
 
     class Meta:
         model = EventParticipant
-        fields = ['id', 'event_info', 'user_info', 'team_info']
+        fields = ['id', 'event_info']
 
     def get_event_info(self, obj):
         if not obj.event:
             return None
         return EventOutSerializer(obj.event).data
 
-    def get_user_info(self, obj):
-        if not obj.user:
-            return None
-        return UserOutSerializer(obj.user).data
+    # def get_user_info(self, obj):
+    #     if not obj.user:
+    #         return None
+    #     return UserOutSerializer(obj.user).data
 
-    def get_team_info(self, obj):
-        if not obj.team:
-            return None
-        return TeamOutSerializer(obj.team).data
+    # def get_team_info(self, obj):
+    #     if not obj.team:
+    #         return None
+    #     return TeamOutSerializer(obj.team).data

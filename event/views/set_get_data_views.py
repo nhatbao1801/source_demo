@@ -20,8 +20,9 @@ from event.models.sponsor_event import SponsorEvent
 from event.models.event_category import EventCategory
 from event.models.event import Event
 from event.serializers.event_category_serializer import EventCategorySerializer
-from event.serializers.event_participant_serializer import EventParticipantSerializer
+from event.serializers.event_participant_serializer import EventOutParticipantSerializer, EventParticipantSerializer
 from event.serializers.event_sponsor_serializer import EventSponsorOutSerializer, EventSponsorSerializer
+from event.serializers.ticket_serializer import TicketSerializer
 from utils import none_any, name_of_none_args, convert_str_date_datetime
 from utils.h_paginator import h_paginator
 from event.serializers.event_serializer import *

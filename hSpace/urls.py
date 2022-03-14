@@ -12,6 +12,14 @@ from rest_framework.permissions import IsAdminUser
 from django.contrib.admin import AdminSite
 
 from event.models.event import Event
+from event.models.event_category import EventCategory
+from event.models.event_participant import EventParticipant
+from event.models.event_type import EventType
+from event.models.sponsor_event import SponsorEvent
+from event.models.media import Media
+from event.models.ticket import Ticket
+from event.views.set_get_data_views import EventViewSet
+
 
 # Tùy biến trang admin
 class HinnoxAdminSite(AdminSite):
@@ -21,7 +29,15 @@ class HinnoxAdminSite(AdminSite):
 
 admin_site = HinnoxAdminSite(name='hSpaces.net admin')
 
-admin_site.register(Event)
+admin_site.register(Event) # addevent
+admin_site.register(EventParticipant)  # Danh sách người tham gia event
+admin_site.register(EventCategory)  # Danh sách nhà tài trợ
+admin_site.register(EventType)  # loại event
+admin_site.register(SponsorEvent)  #Danh sách các nhà tài trợ cho các sự kiện
+admin_site.register(Media)  # medias của event
+admin_site.register(Ticket)  # thông tin ticket của event
+
+
 
 schema_view = get_schema_view(
     openapi.Info(

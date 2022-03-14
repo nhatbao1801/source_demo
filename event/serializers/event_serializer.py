@@ -4,7 +4,12 @@ from django.db.models import Q
 from rest_framework import serializers
 
 from event.models.event import Event
+from event.models.team import Team
+from event.models.user import User
 from event.serializers.event_sponsor_serializer import EventSponsorOutSerializer
+from event.serializers.team_serializer import TeamOutSerializer
+from event.serializers.ticket_serializer import TicketOutSerializer
+from event.serializers.user_serializer import UserOutSerializer
 
 
 class EventAreaField(serializers.RelatedField, ABC):

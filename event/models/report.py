@@ -5,7 +5,9 @@ from datetime import datetime
 
 from django.db import models
 
-from hSchool.models import Course, Question, CourseQuestionAnswer
+from models.course import Course
+from models.question import Question
+from models.course_question_answer import CourseQuestionAnswer
 from models.message import Message
 from models.report_type import ReportType
 

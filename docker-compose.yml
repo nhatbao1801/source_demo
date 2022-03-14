@@ -32,5 +32,5 @@ services:
       - USE_S3='FALSE'
       - AWS_ACCESS_KEY_ID='AKIAVLADZRMD3YAPSU7P'
       - AWS_SECRET_ACCESS_KEY='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'
-      - AWS_STORAGE_BUCKET_NAME ='hspace-s3'
+      - AWS_STORAGE_BUCKET_NAME='hspace-s3'
       - AWS_DEFAULT_ACL='public-read'

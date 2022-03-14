@@ -1,4 +1,4 @@
-from models import Event
+from models.event import Event
 
 
 def get_event_near_user(request):

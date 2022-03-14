@@ -12,7 +12,7 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from event.serializers import EventSerializer
 from event.serializers.event_type_serializer import EventTypeSerializer
 from event.views.support.suggestion import get_event_near_user
-from models import EventType, Event
+from models.event import EventType, Event
 from utils import data_from_method_get
 from utils.h_paginator import h_paginator
 
@@ -109,6 +109,7 @@ class AllEventViewAPI(APIView):
     )
     def get(self, request, *args, **kwargs):
         search = request.query_params.get('search')
+        
         org_id = request.query_params.get('org_id')
         team_id = request.query_params.get('team_id')
         events = Event.objects.all()

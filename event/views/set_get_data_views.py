@@ -18,9 +18,11 @@ from event.serializers.event_category_serializer import EventCategorySerializer
 from event.serializers.event_participant_serializer import EventOutParticipantSerializer
 from event.serializers.event_serializer import EventOutSerializer
 from event.serializers.event_sponsor_serializer import EventSponsorSerializer, EventSponsorOutSerializer
-from hSchool.views.set_data_views_001 import SchemaBase
+# from hSchool.views.set_data_views_001 import SchemaBase
+from views.set_data_views_001 import SchemaBase
 from models import Ticket, Event, EventParticipant, User, SponsorEvent, EventCategory
-from main.serializers import TicketSerializer
+# from main.serializers import TicketSerializer
+from serializers import TicketSerializer
 from utils import none_any, name_of_none_args, convert_str_date_datetime
 from utils.h_paginator import h_paginator
 

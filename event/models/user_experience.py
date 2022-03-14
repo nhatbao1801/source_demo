@@ -1,7 +1,8 @@
 from django.db import models
 from django.utils.timezone import now
 
-from . import Position, Organization, City
+from .position import Position
+from organization import Organization, City
 from .base import BaseModel
 from .user import User
 from .team import Team

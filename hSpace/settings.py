@@ -4,14 +4,12 @@ Any change could be make things not working properly, so be careful with that
 """
 import os
 import platform
-from datetime import timedelta
-from pathlib import Path
-
 import dj_database_url
-from django.utils.translation import gettext_lazy as _
+from datetime import timedelta
 from dotenv import load_dotenv
-
-# from .extra_settings import (CKEDITOR_CONFIGS, SWAGGER_SETTINGS, REDOC_SETTINGS, ELASTICSEARCH_DSL)
+from pathlib import Path
+from django.utils.translation import gettext_lazy as _
+from .extra_settings import (CKEDITOR_CONFIGS, SWAGGER_SETTINGS, REDOC_SETTINGS, ELASTICSEARCH_DSL)
 
 # Load our secret keys to use in development .env is being ignored in commit
 load_dotenv(dotenv_path=Path('.env'))
@@ -68,9 +66,7 @@ INSTALLED_APPS = [
     'corsheaders',  # Avoid CORS policy
     # User created app
     'event.apps.EventConfig',
-    'ckeditor',  # https://github.com/django-ckeditor/django-ckeditor#installation
-    # 'django_elasticsearch_dsl',  # https://elasticsearch-dsl.readthedocs.io/
-    # 'django_elasticsearch_dsl_drf',
+
 ]
 
 if os.environ.get('USE_S3', os.getenv('USE_S3')) == 'TRUE':

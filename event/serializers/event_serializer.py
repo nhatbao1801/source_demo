@@ -4,11 +4,12 @@ from django.db.models import Q
 from rest_framework import serializers
 
 from event.serializers.event_sponsor_serializer import EventSponsorSerializer, EventSponsorOutSerializer
-from models import Event, User, Team
-from main.serializers import ApplicationSerializer
-from main.serializers.application_serializer import ApplicationFormOutSerializer
-from main.serializers.ticket_serializer import TicketOutSerializer
-from main.serializers.user_serializer import UserOutSerializer
+from models.event import Event, Team
+from models.user import User
+from serializers.application_serializer import ApplicationSerializer
+from serializers.application_serializer import ApplicationFormOutSerializer
+from serializers.ticket_serializer import TicketOutSerializer
+from serializers.user_serializer import UserOutSerializer
 from startup.serializers.team_serializer import TeamOutSerializer
 
 

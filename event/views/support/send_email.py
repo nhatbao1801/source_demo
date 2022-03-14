@@ -2,7 +2,8 @@ from django.utils.translation import gettext_lazy as _
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 
-from hSpace import settings
+# from hSpace import settings
+from django.conf import settings
 
 
 def owner_event_send_thanks(data=None):

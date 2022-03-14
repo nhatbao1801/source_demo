@@ -1,8 +1,8 @@
 from rest_framework import serializers
 
 from event.serializers.event_category_serializer import EventCategorySerializer
-from models import SponsorEvent
-from main.serializers import SponsorSerializer
+from models.sponsor_event import SponsorEvent
+from serializers.event_sponsor_serializer import SponsorSerializer
 
 
 class EventSponsorSerializer(serializers.ModelSerializer):

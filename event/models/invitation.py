@@ -1,6 +1,6 @@
 from django.db import models
 
-from hSchool.models import Course
+from models.course import Course
 from .user import User
 from .team import Team
 from .organization import Organization
@@ -14,7 +14,7 @@ class Invitation(models.Model):
     organization = models.ForeignKey(to=Organization, blank=True, null=True, on_delete=models.PROTECT)
     constest = models.ForeignKey(to=Contest, blank=True, null=True, on_delete=models.PROTECT)
     event = models.ForeignKey(to=Event, blank=True, null=True, on_delete=models.PROTECT)
-    course = models.ForeignKey(to=Course, blank=True, null=True, on_delete=models.PROTECT)
+    # course = models.ForeignKey(to=Course, blank=True, null=True, on_delete=models.PROTECT)
     to_user = models.ForeignKey(to=User, on_delete=models.PROTECT, null=True, blank=True)
     position = models.ForeignKey(to=Position, on_delete=models.DO_NOTHING, help_text='Vị trí người được mời vào',
                                  null=True, blank=True)

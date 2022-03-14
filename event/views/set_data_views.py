@@ -23,7 +23,7 @@ from event.serializers import EventSerializer
 from event.serializers.event_serializer import EventOutSerializer
 from event.views.support.send_email import owner_event_send_thanks, team_or_user_send_join_event
 from models import Event, Team, Media, EventParticipant, Area, Post
-from main.serializers.post_serializer import PostSerializer
+from serializers.post_serializer import PostSerializer
 from utils import update_cover, data_from_method_post_put_delete, convert_str_date_datetime
 
 

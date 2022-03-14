@@ -1,6 +1,6 @@
 from django.db import models
 
-from . import Event
+from .event import Event
 from .user import User
 from .team import Team
 from .organization import Organization

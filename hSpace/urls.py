@@ -1,14 +1,15 @@
 import django_js_reverse.views
 from django.conf.urls import url
-# from main.admin import admin_site
-from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from django.urls import include, path
+from django.urls import path, include
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 from rest_framework.documentation import include_docs_urls
 from rest_framework.permissions import IsAdminUser
+
+from django.contrib import admin as admin_site
+
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -20,11 +21,11 @@ schema_view = get_schema_view(
         license=openapi.License(name="BSD License"),
     ),
     public=True,
-    permission_classes=(permissions.IsAuthenticated, permissions.IsAdminUser),
+    # permission_classes=(permissions.IsAuthenticated, permissions.IsAdminUser),
 )
 
 urlpatterns = [
-    path('admin/', admin.urls),
+    path('admin/', admin_site),
     path(
         'admin/password_reset/',
         auth_views.PasswordResetView.as_view(),
@@ -46,9 +47,7 @@ urlpatterns = [
         name='password_reset_complete',
     ),
     path('event/', include('event.urls')),
-    path('docs/', include_docs_urls(title='hSpaces.net API', description='Sumary API used in the hspaces.net project',
-                                    permission_classes=[IsAdminUser]
-                                    )),
+    path('docs/', include_docs_urls(title='hSpaces.net API', description='Sumary API used in the hspaces.net project')),
     url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),

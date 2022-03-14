@@ -9,7 +9,7 @@ from models.base import BaseModel
 from models.open_innovation import OpenInnovation
 from models.team import Team
 from models.user import User
-from main.serializers.document_serializer import DocumentOutSerializer
+from serializers.document_serializer import DocumentOutSerializer
 
 
 class OpenInnovationSubmit(BaseModel):
@@ -71,9 +71,9 @@ class OpenInnovationSubmit(BaseModel):
             self.date_submit = datetime.today()
         return super(OpenInnovationSubmit, self).save(*args, **kwargs)
 
-    @property
-    def get_documents(self):
-        return DocumentOutSerializer(self.document_set.all(), many=True).data
+    # @property
+    # def get_documents(self):
+    #     return DocumentOutSerializer(self.document_set.all(), many=True).data
 
     @property
     def get_picture(self):

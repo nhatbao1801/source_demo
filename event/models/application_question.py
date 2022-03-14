@@ -1,4 +1,4 @@
-from django.db import models
+""" from django.db import models
 from .question_template import QuestionTemplate
 from .application import Application
 from .question_type import QuestionType
@@ -24,3 +24,4 @@ class ApplicationQuestion(models.Model):
         if self.content is None:
             return self.question_template
         return self.content
+ """

@@ -1,9 +1,7 @@
 from rest_framework import serializers
 
 from event.serializers.event_serializer import EventOutSerializer
-from models import EventParticipant
-from main.serializers.user_serializer import UserOutSerializer
-from startup.serializers.team_serializer import TeamOutSerializer
+from event.models.event_participant import EventParticipant
 
 
 class EventParticipantSerializer(serializers.ModelSerializer):

@@ -12,7 +12,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST
 
-from models.media import Media
+from event.models.media import Media
 
 logger = logging.getLogger(__name__)
 

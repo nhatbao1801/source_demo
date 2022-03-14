@@ -7,14 +7,7 @@ from event.models.base import BaseModel
 
 class Comment(BaseModel):
     """Comment model - Bảng lưu lại các bình luận"""
-    user = models.ForeignKey(to='main.User', on_delete=models.CASCADE, verbose_name=_('User'), help_text=_('Who comment'))
-
-    post = models.ForeignKey(to='main.Post', blank=True, null=True, on_delete=models.CASCADE, verbose_name=_('Post'))
-    kpi = models.ForeignKey(to='main.KPI', blank=True, null=True, on_delete=models.CASCADE, verbose_name=_('KPI'))
-    open_innovation = models.ForeignKey(to='main.OpenInnovation', blank=True, null=True, on_delete=models.CASCADE , verbose_name=_('Challenge'))
-    course = models.ForeignKey(to='hSchool.Course', blank=True, null=True, on_delete=models.CASCADE, verbose_name=_('Course'))
-    course_announcement = models.ForeignKey(to='hSchool.CourseAnnouncement', blank=True, null=True, on_delete=models.CASCADE, verbose_name='Course announcement')
-    course_question_answer = models.ForeignKey(to='hSchool.CourseQuestionAnswer', blank=True, null=True, on_delete=models.CASCADE, verbose_name='Course question answer')
+    user = models.ForeignKey(to='event.User', on_delete=models.CASCADE, verbose_name=_('User'), help_text=_('Who comment'))
 
     content = models.TextField(verbose_name=_('Content'), help_text=_('Content of comment'))
 

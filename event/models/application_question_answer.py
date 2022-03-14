@@ -1,4 +1,4 @@
-from django.db import models
+""" from django.db import models
 from .application import Application
 from .team import Team
 from .user import User
@@ -19,3 +19,4 @@ class ApplicationQuestionAnswer(models.Model):
         if len(self.answer) > 50:
             return self.answer[:50]
         return self.answer
+ """

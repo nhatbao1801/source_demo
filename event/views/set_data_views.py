@@ -19,11 +19,11 @@ from rest_framework.status import (HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_201_C
 from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
-from event.serializers import EventSerializer
-from event.serializers.event_serializer import EventOutSerializer
 from event.views.support.send_email import owner_event_send_thanks, team_or_user_send_join_event
-from models import Event, Team, Media, EventParticipant, Area, Post
-from main.serializers.post_serializer import PostSerializer
+from event.models.event import Event
+from event.models.media import Media
+from event.models.event_participant import EventParticipant
+from event.models.area import Area
 from utils import update_cover, data_from_method_post_put_delete, convert_str_date_datetime
 
 

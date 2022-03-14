@@ -13,23 +13,24 @@ from rest_framework.status import HTTP_404_NOT_FOUND, HTTP_200_OK
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from event.schemas.event_out_schema import EventOutSchema
-from event.serializers import EventSerializer, EventParticipantSerializer
+from event.models.ticket import Ticket
+from event.models.event_participant import EventParticipant
+from event.models.user import User
+from event.models.sponsor_event import SponsorEvent
+from event.models.event_category import EventCategory
+from event.models.event import Event
 from event.serializers.event_category_serializer import EventCategorySerializer
-from event.serializers.event_participant_serializer import EventOutParticipantSerializer
-from event.serializers.event_serializer import EventOutSerializer
-from event.serializers.event_sponsor_serializer import EventSponsorSerializer, EventSponsorOutSerializer
-from hSchool.views.set_data_views_001 import SchemaBase
-from models import Ticket, Event, EventParticipant, User, SponsorEvent, EventCategory
-from main.serializers import TicketSerializer
+from event.serializers.event_participant_serializer import EventParticipantSerializer
+from event.serializers.event_sponsor_serializer import EventSponsorOutSerializer, EventSponsorSerializer
 from utils import none_any, name_of_none_args, convert_str_date_datetime
 from utils.h_paginator import h_paginator
-
+from event.serializers.event_serializer import *
 
 class TicketViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication, SessionAuthentication, TokenAuthentication]
     permissions_classes = [IsAuthenticated]
     queryset = Ticket.objects.all()
-    serializer_class = TicketSerializer
+    serializer_class = None
 
     @swagger_auto_schema(
         operation_summary='Danh sách ticket',
@@ -55,7 +56,7 @@ class TicketViewSet(viewsets.ModelViewSet):
                             }
                         )
                     ),
-                    "metadata": SchemaBase.metadata,
+                    # "metadata": SchemaBase.metadata,
                 }
             )
         }
@@ -122,14 +123,15 @@ class EventViewSet(viewsets.ModelViewSet):
                         type=openapi.TYPE_ARRAY,
                         items=EventOutSchema.get_schema()
                     ),
-                    "metadata": SchemaBase.metadata,
+                    # "metadata": SchemaBase.metadata,
                 }
             )
         }
     )
     def list(self, request):
         try:
-            queryset = Event.objects.filter(application__applicationform__is_used=True)
+            # queryset = Event.objects.filter(application__applicationform__is_used=True)
+            queryset = Event.objects.filter()
             if request.query_params.get('name'):
                 queryset = queryset.filter(name__icontains=request.query_params.get('name'))
             if request.GET.getlist('areas'):
@@ -230,7 +232,7 @@ class EventParticipantModelViewSet(viewsets.ModelViewSet):
                             }
                         )
                     ),
-                    "metadata": SchemaBase.metadata,
+                    # "metadata": SchemaBase.metadata,
                 }
             )
         }

@@ -9,6 +9,19 @@ from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 from rest_framework.documentation import include_docs_urls
 from rest_framework.permissions import IsAdminUser
+from django.contrib.admin import AdminSite
+
+from event.models.event import Event
+
+# Tùy biến trang admin
+class HinnoxAdminSite(AdminSite):
+    site_header = ('Admin site for hSpaces.net')
+    site_title = ('Hello from hSpaces.net')
+    index_title = ('hSpaces.net')
+
+admin_site = HinnoxAdminSite(name='hSpaces.net admin')
+
+admin_site.register(Event)
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -24,7 +37,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path('admin/', admin.urls),
+    path('admin/', admin_site.urls),
     path(
         'admin/password_reset/',
         auth_views.PasswordResetView.as_view(),
@@ -53,3 +66,7 @@ urlpatterns = [
     url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
+
+
+# Register models
+# admin_site.register(Event)

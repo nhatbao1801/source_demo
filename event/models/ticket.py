@@ -1,11 +1,9 @@
 from django.db import models
 from .event import Event
-from .timezone import TimeZone
 
 
 class Ticket(models.Model):
     event = models.ForeignKey(to=Event, on_delete=models.CASCADE)
-    timezone = models.ForeignKey(to=TimeZone, on_delete=models.DO_NOTHING)
     name = models.CharField(max_length=50, help_text='Dành cho đối tượng nào Participant, Developer, Designer, Tự thêm')
     description = models.CharField(max_length=300, blank=True, null=True, help_text='Mô tả sự kiện')
     sale_from = models.DateTimeField(help_text='Ngày mở bán')

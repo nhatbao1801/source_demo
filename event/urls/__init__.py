@@ -1,8 +1,7 @@
 from django.urls import path
 
-from event.urls import ajax, api
+from event.urls import api
 
 app_name = 'event'
 
-urlpatterns = ajax.urlpatterns
-urlpatterns += api.urlpatterns
+urlpatterns = api.urlpatterns

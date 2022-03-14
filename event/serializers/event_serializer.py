@@ -3,13 +3,8 @@ from abc import ABC
 from django.db.models import Q
 from rest_framework import serializers
 
-from event.serializers.event_sponsor_serializer import EventSponsorSerializer, EventSponsorOutSerializer
-from models import Event, User, Team
-from main.serializers import ApplicationSerializer
-from main.serializers.application_serializer import ApplicationFormOutSerializer
-from main.serializers.ticket_serializer import TicketOutSerializer
-from main.serializers.user_serializer import UserOutSerializer
-from startup.serializers.team_serializer import TeamOutSerializer
+from event.models.event import Event
+from event.serializers.event_sponsor_serializer import EventSponsorOutSerializer
 
 
 class EventAreaField(serializers.RelatedField, ABC):
@@ -64,22 +59,22 @@ class EventSerializer(serializers.ModelSerializer):
 
 
 class EventOutSerializer(serializers.ModelSerializer):
-    picture = serializers.CharField(read_only=True, source='get_picture_url')
-    areas_info = serializers.SerializerMethodField()
-    city_info = serializers.SerializerMethodField()
-    type_info = serializers.SerializerMethodField()
-    object_creation = serializers.SerializerMethodField()
-    areas_id = serializers.SerializerMethodField()
-    city_id = serializers.SerializerMethodField()
-    event_type_id = serializers.SerializerMethodField()
-    cover = serializers.SerializerMethodField()
-    is_edit = serializers.SerializerMethodField()
-    ticket_info = serializers.SerializerMethodField()
-    participants = serializers.SerializerMethodField()
-    bought = serializers.SerializerMethodField()
-    sponsor_info = serializers.SerializerMethodField()
-    application_info = serializers.SerializerMethodField()
-    application_form_info = serializers.SerializerMethodField()
+    # picture = serializers.CharField(read_only=True, source='get_picture_url')
+    # areas_info = serializers.SerializerMethodField()
+    # city_info = serializers.SerializerMethodField()
+    # type_info = serializers.SerializerMethodField()
+    # object_creation = serializers.SerializerMethodField()
+    # areas_id = serializers.SerializerMethodField()
+    # city_id = serializers.SerializerMethodField()
+    # event_type_id = serializers.SerializerMethodField()
+    # cover = serializers.SerializerMethodField()
+    # is_edit = serializers.SerializerMethodField()
+    # ticket_info = serializers.SerializerMethodField()
+    # participants = serializers.SerializerMethodField()
+    # bought = serializers.SerializerMethodField()
+    # sponsor_info = serializers.SerializerMethodField()
+    # application_info = serializers.SerializerMethodField()
+    # application_form_info = serializers.SerializerMethodField()
 
     class Meta:
         model = Event
@@ -148,6 +143,7 @@ class EventOutSerializer(serializers.ModelSerializer):
         return TicketOutSerializer(obj.ticket_set.all(), many=True).data
 
     def get_participants(self, obj):
+        pass
         event_user_participants = []
         event_team_participants = []
         if obj.eventparticipant_set.all().filter(team__isnull=True):
@@ -161,7 +157,7 @@ class EventOutSerializer(serializers.ModelSerializer):
         return {"users": event_user_participants, "teams": event_team_participants}
 
     def get_bought(self, obj):
-        if self.context.get('request'):
+        """ if self.context.get('request'):
             request = self.context.get('request')
             # Danh sách đối tượng đã mua vé sự kiện
             participants = obj.eventparticipant_set.all()
@@ -177,7 +173,8 @@ class EventOutSerializer(serializers.ModelSerializer):
                     set(ids_team_participant) & set(ids_team_working)) == 0:
                 return False
             return True
-        return None
+        return None """
+        pass
 
     def get_sponsor_info(self, obj):
         if not obj.sponsorevent_set.all():
@@ -185,20 +182,22 @@ class EventOutSerializer(serializers.ModelSerializer):
         return EventSponsorOutSerializer(obj.sponsorevent_set.all(), many=True, context={'request': self.context.get('request')}).data
 
     def get_application_info(self, obj):
-        try:
+        pass
+        """ try:
             return ApplicationSerializer(obj.application).data
         except:
-            return None
+            return None """
 
     def get_application_form_info(self, obj):
-        try:
-            af_info = obj.application.applicationform_set.all().filter(is_used=True).first()
-            if not af_info:
-                return None
-            return ApplicationFormOutSerializer(af_info).data
-        except Exception as e:
-            print(e)
-            return None
+        pass
+        # try:
+        #     af_info = obj.application.applicationform_set.all().filter(is_used=True).first()
+        #     if not af_info:
+        #         return None
+        #     return ApplicationFormOutSerializer(af_info).data
+        # except Exception as e:
+        #     print(e)
+        #     return None
 
 
 class EventSerializerForValidation(serializers.Serializer):

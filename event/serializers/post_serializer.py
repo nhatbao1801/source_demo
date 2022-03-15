@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
-from models.post import Post
-from serializers.comment_serializer import CommentSerializer
+from event.models.post import Post
+# from event.serializers.comment_serializer import CommentSerializer  # modify
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -27,8 +27,8 @@ class PostSerializer(serializers.ModelSerializer):
     def get_images(self, obj):
         return [img.get_image_url() for img in obj.media_set.all()]
 
-    def get_comments(self, obj):
-        return CommentSerializer(obj.comment_set.all(), many=True).data
+    # def get_comments(self, obj):
+    #     return CommentSerializer(obj.comment_set.all(), many=True).data
 
     def get_heaters(self, obj):
         return [{"id": heat.id,

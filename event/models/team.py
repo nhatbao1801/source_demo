@@ -9,9 +9,11 @@ from django.utils.text import slugify
 from django.utils.timezone import now
 
 from .stage import Stage
+from .support.generate import gen_unique_number
 
 
 class Team(models.Model):
+    unique_id = models.CharField(default=gen_unique_number, max_length=30, unique=True)
     user = models.ForeignKey(to='User', on_delete=models.CASCADE, help_text='Admin của trang')
     stage = models.ForeignKey(to=Stage, null=True, on_delete=models.CASCADE,
                               help_text='Giai đoạn phát triển của một team')

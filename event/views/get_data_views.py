@@ -8,11 +8,15 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK
 from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
-
-from event.serializers import EventSerializer
+from event.serializers.event_serializer import EventSerializer
 from event.serializers.event_type_serializer import EventTypeSerializer
+
 from event.views.support.suggestion import get_event_near_user
+<<<<<<< HEAD
 from models.event import EventType, Event
+=======
+from event.models.event import EventType, Event
+>>>>>>> 02a15d0be5429e2ba4d8d0375465721ad65371de
 from utils import data_from_method_get
 from utils.h_paginator import h_paginator
 

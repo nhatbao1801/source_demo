@@ -1,8 +1,8 @@
 from django.urls import path
 from rest_framework.routers import DefaultRouter
 
-from event.views.get_data_views import GetEventTypes
-from event.views.set_data_views import AddEventAPI, EditEventAPI, DeleteEvent, upload_a_post, \
+from event.views.get_data_views import AllEventViewAPI, GetEventTypes
+from event.views.set_data_views import AddEventAPI, EditEventAPI, DeleteEvent, JoinEventAPI, upload_a_post, \
     delete_a_post, MediasEvent
 from event.views.set_get_data_views import TicketViewSet, EventViewSet, EventParticipantModelViewSet, \
     EventSponsorModelViewSet, EventCategoryModelViewSet
@@ -11,16 +11,16 @@ urlpatterns = [
     # Lấy danh sách các loại sự kiện
     path('get-event-type/', GetEventTypes.as_view(), name='get-event-type'),
     # Danh sách tất cả các sự kiện hiện có
-    # path('all-event/', AllEventViewAPI.as_view(), name='all-event'),
+    path('all-event/', AllEventViewAPI.as_view(), name='all-event'),
     # Thêm sự kiện
     path('add-event/', AddEventAPI.as_view(), name='add-event'),
     # Cập nhật sự kiện
     path('edit-event/', EditEventAPI.as_view(), name='edit-event'),
     path('<int:id>/', DeleteEvent.as_view(), name='delete-event'),
     # Đăng ký tham gia sự kiện
-    # path('join-event/', JoinEventAPI.as_view(), name='join-event')
+    path('join-event/', JoinEventAPI.as_view(), name='join-event'),
     # Đăng bài biết lên trang của sự kiện
-    path('upload-a-post/', upload_a_post, name='upload-a-post'),
+    # path('upload-a-post/', upload_a_post, name='upload-a-post'),
     # Chủ bài viết | chủ sự kiện xóa một bài viết
     path('delete-a-post/<int:post_id>/', delete_a_post, name='delete-a-post-of-event'),
     path('medias/', MediasEvent.as_view({'get': 'list_images', 'post': 'update_medias'}), name='medias-event'),

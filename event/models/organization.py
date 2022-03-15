@@ -8,9 +8,11 @@ from django.utils.timezone import now
 
 from .city import City
 from .organization_type import OrganizationType
+from .support.generate import gen_unique_number
 
 
 class Organization(models.Model):
+    unique_id = models.CharField(default=gen_unique_number, max_length=30, unique=True)
     user = models.ForeignKey(to='User', on_delete=models.DO_NOTHING)
     type = models.ForeignKey(to=OrganizationType, on_delete=models.DO_NOTHING)
     city = models.ForeignKey(to=City, blank=True, null=True, on_delete=models.SET_NULL)

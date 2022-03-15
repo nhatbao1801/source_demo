@@ -1,1 +1,0 @@
-**Các models trong dự án được tổ chức thành file riêng lẽ**

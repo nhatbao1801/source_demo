@@ -1,3 +1,4 @@
+# from email.policy import default
 from django.db import models
 
 from .event import Event
@@ -10,7 +11,7 @@ class SponsorEvent(models.Model):
     """
     event = models.ForeignKey(to=Event, on_delete=models.CASCADE)
     sponsor = models.ForeignKey(to=Sponsor, on_delete=models.CASCADE)
-    event_category = models.ForeignKey(to='main.EventCategory', blank=True, null=True, on_delete=models.CASCADE)
+    event_category = models.ForeignKey(to='event.EventCategory', blank=True, null=True, on_delete=models.CASCADE)
     custom_category_name = models.CharField(max_length=55, help_text='Hạng mục nhà tài trợ tùy chỉnh')
 
     class Meta:

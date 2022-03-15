@@ -158,7 +158,7 @@ USE_TZ = True
 
 CSRF_USE_SESSIONS = True
 
-# AUTH_USER_MODEL = 'event.User'
+AUTH_USER_MODEL = 'event.User'
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 STATIC_URL = '/static/'
@@ -293,21 +293,3 @@ elif platform.system() == 'Linux':
             'LOCATION': 'unix:/tmp/memcached.sock',
         }
     }
-
-# Config S3
-if os.environ.get('USE_S3', os.getenv('USE_S3')) == 'TRUE':
-    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', os.getenv('AWS_ACCESS_KEY_ID'))
-    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', os.getenv('AWS_SECRET_ACCESS_KEY'))
-    AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME', os.getenv('AWS_STORAGE_BUCKET_NAME'))
-    AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
-    AWS_DEFAULT_ACL = os.environ.get('AWS_DEFAULT_ACL', os.getenv('AWS_DEFAULT_ACL'))  # 'public-read'
-
-    AWS_S3_OBJECT_PARAMETERS = {
-        'CacheControl': 'max-age=86400',
-    }
-
-    AWS_PUBLIC_MEDIA_LOCATION = 'media/public'
-    DEFAULT_FILE_STORAGE = 'hSpace.extra_settings.storage_backends.PublicMediaStorage'
-
-    AWS_PRIVATE_MEDIA_LOCATION = 'media/private'
-    PRIVATE_FILE_STORAGE = 'hSpace.extra_settings.storage_backends.PrivateMediaStorage'

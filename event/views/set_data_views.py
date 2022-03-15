@@ -18,12 +18,16 @@ from rest_framework.status import (HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_201_C
                                    HTTP_403_FORBIDDEN)
 from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from event.models.post import Post
+from event.models.team import Team
+from event.serializers.event_serializer import EventOutSerializer, EventSerializer
+from event.serializers.post_serializer import PostSerializer
 
-from event.serializers import EventSerializer
-from event.serializers.event_serializer import EventOutSerializer
 from event.views.support.send_email import owner_event_send_thanks, team_or_user_send_join_event
-from models import Event, Team, Media, EventParticipant, Area, Post
-from serializers.post_serializer import PostSerializer
+from event.models.event import Event
+from event.models.media import Media
+from event.models.event_participant import EventParticipant
+from event.models.area import Area
 from utils import update_cover, data_from_method_post_put_delete, convert_str_date_datetime
 
 

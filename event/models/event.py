@@ -7,14 +7,9 @@ from .area import Area
 from .base import BaseModel
 from .city import City
 from .event_type import EventType
-from .organization import Organization
-from .team import Team
 
 
 class Event(BaseModel):
-    team = models.ForeignKey(to=Team, on_delete=models.CASCADE, blank=True, null=True, help_text='Team tạo sự kiện')
-    organization = models.ForeignKey(to=Organization, on_delete=models.CASCADE, blank=True, null=True,
-                                     help_text='Tổ chức tạo sự kiện')
     city = models.ForeignKey(to=City, blank=True, null=True, on_delete=models.CASCADE, help_text='Thành phố noi tổ chức sự kiện')
     type = models.ForeignKey(to=EventType, blank=True, null=True, on_delete=models.CASCADE, help_text='Loại sự kiện')
     areas = models.ManyToManyField(to=Area, blank=True, db_table='hinnox_events_areas')
@@ -34,7 +29,7 @@ class Event(BaseModel):
     from_date = models.DateTimeField(blank=True, null=True, help_text='Ngày bắt đầu')
     to_date = models.DateTimeField(blank=True, null=True, help_text='Ngày kết thúc')
     schedule = models.TextField(blank=True, null=True, help_text='Kế hoạch tổ chức của sự kiện')
-    users_interested_in = models.ManyToManyField(to='main.User', help_text='User quan tâm tới sự kiện', blank=True)
+    users_interested_in = models.ManyToManyField(to='event.User', help_text='User quan tâm tới sự kiện', blank=True)
     last_modified = models.DateTimeField(help_text='Thời gian sửa đổi lần cuối', blank=True, null=True)
 
     class Meta:

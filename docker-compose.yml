@@ -7,6 +7,8 @@ services:
     # command: uvicorn --workers 3 --host 0.0.0.0 --port 8005 --reload hSpace.asgi:application 
     command: uvicorn --workers 3 --host 0.0.0.0 --port 8006 --reload hSpace.asgi:application
     # command: /home/ubuntu/app/_course/course.api.hspace.biz/venv/bin/gunicorn --workers 3 --bind 0.0.0.0:8006 hSpace.wsgi:application
+    volumes:
+    - .:/usr/src/hSpace.com
     ports:
       - 8006:8006
     environment:

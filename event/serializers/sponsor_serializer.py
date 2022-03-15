@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from models.sponsor import Sponsor
+from event.models.sponsor import Sponsor
 
 
 class SponsorSerializer(serializers.ModelSerializer):

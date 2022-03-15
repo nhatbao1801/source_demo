@@ -2,31 +2,11 @@ import cloudinary
 from cloudinary.models import CloudinaryField
 from django.db import models
 
-from .contest import Contest
-from .event import Event
-from .organization import Organization
-from .post import Post
-from .team import Team
-from .user import User
+from event.models.event import Event
 
 
 class Media(models.Model):
-    user = models.ForeignKey(to=User, blank=True, null=True, on_delete=models.CASCADE)
-    team = models.ForeignKey(to=Team, blank=True, null=True, on_delete=models.CASCADE)
-    organization = models.ForeignKey(to=Organization, blank=True, null=True, on_delete=models.CASCADE)
-    contest = models.ForeignKey(to=Contest, blank=True, null=True, on_delete=models.CASCADE)
     event = models.ForeignKey(to=Event, blank=True, null=True, on_delete=models.CASCADE)
-    post = models.ForeignKey(to=Post, blank=True, null=True, on_delete=models.CASCADE)
-    course = models.ForeignKey(to='hSchool.Course', blank=True, null=True, on_delete=models.CASCADE)
-    course_announcement = models.ForeignKey(to='hSchool.CourseAnnouncement', blank=True, null=True,
-                                            on_delete=models.CASCADE)
-    course_question_answer = models.ForeignKey(to='hSchool.CourseQuestionAnswer', blank=True, null=True,
-                                               on_delete=models.CASCADE)
-    application_form = models.ForeignKey(to='main.ApplicationForm', blank=True, null=True, on_delete=models.CASCADE)
-    open_innovation = models.ForeignKey(to='main.OpenInnovation', blank=True, null=True, on_delete=models.CASCADE)
-    open_innovation_submit = models.ForeignKey(to='main.OpenInnovationSubmit', blank=True, null=True, on_delete=models.CASCADE)
-    talent_skill = models.ForeignKey(to='job.TalentSkill', blank=True, null=True, on_delete=models.CASCADE)
-    user_project = models.ForeignKey(to='main.UserProject', blank=True, null=True, on_delete=models.CASCADE)
 
     class Type(models.TextChoices):
         VIDEO = 'vid', 'video'

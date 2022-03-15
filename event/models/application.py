@@ -1,4 +1,4 @@
-from django.db import models
+""" from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from .accept_type import AcceptType
@@ -9,13 +9,13 @@ from .timezone import TimeZone
 
 
 class Application(BaseModel):
-    contest = models.OneToOneField(to=Contest, blank=True, null=True, on_delete=models.CASCADE)
-    job = models.OneToOneField(to=Job, blank=True, null=True, on_delete=models.CASCADE)
-    job_freelance = models.OneToOneField(to='JobFreelance', blank=True, null=True, on_delete=models.CASCADE)
-    incubator = models.OneToOneField(to='Incubator', blank=True, null=True, on_delete=models.CASCADE)
-    # open_innovation = models.OneToOneField(to='main.OpenInnovation', blank=True, null=True, on_delete=models.PROTECT)
-    event = models.OneToOneField(to='main.Event', blank=True, null=True, on_delete=models.CASCADE)
-    organization = models.OneToOneField(to='main.Organization', blank=True, null=True, on_delete=models.CASCADE)
+    # contest = models.OneToOneField(to=Contest, blank=True, null=True, on_delete=models.CASCADE)
+    # job = models.OneToOneField(to=Job, blank=True, null=True, on_delete=models.CASCADE)
+    # job_freelance = models.OneToOneField(to='JobFreelance', blank=True, null=True, on_delete=models.CASCADE)
+    # incubator = models.OneToOneField(to='Incubator', blank=True, null=True, on_delete=models.CASCADE)
+    # # open_innovation = models.OneToOneField(to='main.OpenInnovation', blank=True, null=True, on_delete=models.PROTECT)
+    # event = models.OneToOneField(to='main.Event', blank=True, null=True, on_delete=models.CASCADE)
+    # organization = models.OneToOneField(to='main.Organization', blank=True, null=True, on_delete=models.CASCADE)
     accept_type = models.ForeignKey(to=AcceptType, blank=True, null=True, on_delete=models.SET_NULL)
     apply_from = models.DateTimeField(blank=True, null=True, help_text='Thời điểm bắt đầu nộp đơn đăng ký')
     apply_to = models.DateTimeField(blank=True, null=True, help_text='Thời điểm kết thúc nộp đơn đăng ký')
@@ -73,3 +73,4 @@ class ApplicationFormAnswer(BaseModel):
             return self.organization
         if self.contest:
             return self.contest
+ """

@@ -338,7 +338,7 @@ class DeleteEvent(APIView):
         operation_summary='Xóa sự kiện',
         manual_parameters=[
             openapi.Parameter('id', in_=openapi.IN_PATH, description='Id của sự kiện', type=openapi.TYPE_INTEGER)
-        ],
+        ],   
         responses={
             HTTP_200_OK: openapi.Response(
                 description='', examples={

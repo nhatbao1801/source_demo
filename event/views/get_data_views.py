@@ -109,6 +109,7 @@ class AllEventViewAPI(APIView):
     )
     def get(self, request, *args, **kwargs):
         search = request.query_params.get('search')
+        
         org_id = request.query_params.get('org_id')
         team_id = request.query_params.get('team_id')
         events = Event.objects.all()

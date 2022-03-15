@@ -10,6 +10,7 @@ class Type(models.Model):
     thumb = CloudinaryField(folder='/type/thumb', null=True, blank=True, verbose_name=_('thumb'), help_text=_('Thumbnail of type'))
 
     class Meta:
+        # db_table = 'hinnox_types'
         db_table = 'hinnox_types'
         verbose_name = _('Type')
         verbose_name_plural = _('Types')

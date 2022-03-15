@@ -47,11 +47,11 @@ class Event(BaseModel):
         self.last_modified = now()
         super().save(*args, **kwargs)
 
-    def get_owner(self):
-        if self.team is not None:
-            return self.team
-        if self.organization is not None:
-            return self.organization
+    # def get_owner(self):
+    #     if self.team is not None:
+    #         return self.team
+    #     if self.organization is not None:
+    #         return self.organization
 
     def get_picture_url(self):
         return self.picture.build_url() if self.picture else ''

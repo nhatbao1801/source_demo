@@ -19,7 +19,7 @@ urlpatterns = [
     # Lấy thông tin chi tiết của 1 sự kiện theo id
     # path('get-detail-of-event/', EventViewSet.as_view({'get':'retrieve'}), name='get-detail-of-event'),
     # Cập nhật sự kiện
-    # path('edit-event/', EditEventAPI.as_view(), name='edit-event'),
+    path('edit-event/', EditEventAPI.as_view(), name='edit-event'),
     path('<int:id>/', DeleteEvent.as_view(), name='delete-event'),
     # Đăng ký tham gia sự kiện
     path('join-event/', JoinEventAPI.as_view(), name='join-event'),

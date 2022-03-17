@@ -8,7 +8,6 @@ from .base import BaseModel
 from .city import City
 from .event_type import EventType
 
-
 class Event(BaseModel):
     city = models.ForeignKey(to=City, blank=True, null=True, on_delete=models.CASCADE, help_text='Thành phố noi tổ chức sự kiện')
     type = models.ForeignKey(to=EventType, blank=True, null=True, on_delete=models.CASCADE, help_text='Loại sự kiện')
@@ -38,14 +37,14 @@ class Event(BaseModel):
     def __str__(self):
         return self.name
 
-    def save(self, *args, **kwargs):
-        if self.url is None:
-            from datetime import datetime
-            self.url = slugify(self.name) + '-' + str(abs(hash(datetime.now())))
-        if self.pk is not None and not self.team and not self.organization:
-            raise ValueError("Updating the value of creator isn't allowed")
-        self.last_modified = now()
-        super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     if self.url is None:
+    #         from datetime import datetime
+    #         self.url = slugify(self.name) + '-' + str(abs(hash(datetime.now())))
+    #     if self.pk is not None and not self.team and not self.organization:
+    #         raise ValueError("Updating the value of creator isn't allowed")
+    #     self.last_modified = now()
+    #     super().save(*args, **kwargs)
 
     # def get_owner(self):
     #     if self.team is not None:

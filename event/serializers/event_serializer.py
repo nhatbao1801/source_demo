@@ -29,6 +29,7 @@ class EventSerializer(serializers.ModelSerializer):
         model = Event
         fields = '__all__'
 
+    # comment by Nga
     def get_is_edit(self, obj):
         if not obj.get_owner():
             return None

@@ -1,3 +1,4 @@
+from typing import Type
 import django_js_reverse.views
 from django.conf.urls import url
 from django.contrib.auth import views as auth_views
@@ -8,7 +9,11 @@ from rest_framework import permissions
 from rest_framework.documentation import include_docs_urls
 from rest_framework.permissions import IsAdminUser
 from django.contrib.admin import AdminSite
-
+from event.models.area import Area
+from event.models.city import City
+from event.models.organization import Organization
+from event.models.team import Team
+from event.models.type import Type as type_model
 from event.models.event import Event
 from event.models.event_category import EventCategory
 from event.models.event_participant import EventParticipant
@@ -34,6 +39,10 @@ admin_site.register(EventType)  # loại event
 admin_site.register(SponsorEvent)  #Danh sách các nhà tài trợ cho các sự kiện
 admin_site.register(Media)  # medias của event
 admin_site.register(Ticket)  # thông tin ticket của event
+admin_site.register(Area)
+admin_site.register(City)
+admin_site.register(Team)
+admin_site.register(Organization)
 
 
 

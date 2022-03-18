@@ -59,7 +59,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path('admin/', admin_site.urls),
+    path('', admin_site.urls),
     path(
         'admin/password_reset/',
         auth_views.PasswordResetView.as_view(),

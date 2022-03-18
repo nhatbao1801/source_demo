@@ -5,12 +5,12 @@ services:
     build:
       context: .
     # command: uvicorn --workers 3 --host 0.0.0.0 --port 8005 --reload hSpace.asgi:application 
-    command: uvicorn --workers 3 --host 0.0.0.0 --port 8006 --reload hSpace.asgi:application
+    command: uvicorn --workers 3 --host 0.0.0.0 --port 8008 --reload hSpace.asgi:application
     # command: /home/ubuntu/app/_course/course.api.hspace.biz/venv/bin/gunicorn --workers 3 --bind 0.0.0.0:8006 hSpace.wsgi:application
     volumes:
     - .:/usr/src/hSpace.com
     ports:
-      - 8006:8006
+      - 8008:8008
     environment:
       - SECRET_KEY='wvd@vj33_^^me@^6*et!1j0b&186itjigert^49k&yct0^b9ac'
       - DEBUG=1
@@ -19,7 +19,7 @@ services:
       - EMAIL_PORT=587
       - EMAIL_USE_SSL=False
       - EMAIL_USE_TLS=True
-      - ALLOWED_HOSTS=127.0.0.1 localhost api.hspaces.net dev.api.hspaces.net 13.229.29.156
+      - ALLOWED_HOSTS=127.0.0.1 localhost api.hspaces.net dev.api.hspaces.net 13.229.29.156 event.api.hspace.biz
       - DB_ENGINE=django.db.backends.postgresql
       - DB_USER=hschool
       - DB_NAME=hspace_biz_event

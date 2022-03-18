@@ -45,10 +45,6 @@ admin_site.register(Team)
 admin_site.register(Organization)
 
 
-
-from django.contrib import admin as admin_site
-
-
 schema_view = get_schema_view(
     openapi.Info(
         title="hSpace.biz API",

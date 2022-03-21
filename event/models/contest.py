@@ -38,7 +38,7 @@ class Contest(BaseModel):
                            help_text='Địa chỉ tùy chỉnh đến trang của cuộc thi https://hinnox.com/contest-url')
     from_date = models.DateTimeField(help_text='Ngày bắt đầu', null=True, blank=True)
     to_date = models.DateTimeField(help_text='Ngày kết thúc', null=True, blank=True)
-    users_interested_in = models.ManyToManyField(to='main.User', blank=True, help_text='User quan tâm tới cuộc thi')
+    users_interested_in = models.ManyToManyField(to='event.User', blank=True, help_text='User quan tâm tới cuộc thi')
     last_modified = models.DateTimeField(help_text='Thời gian sửa đổi lần cuối', blank=True, null=True)
 
     class Meta:

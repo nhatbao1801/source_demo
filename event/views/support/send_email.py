@@ -11,7 +11,7 @@ def owner_event_send_thanks(data=None):
     reply_to = settings.DEFAULT_FROM_EMAIL
     body = render_to_string('event/email/email_owner_send_thanks.html',
                             {
-                                'owner_name': data['owner_name'],
+                                # 'owner_name': data['owner_name'],  # Nga comment
                                 'event_name': data['event_name'],
                                 'event_url': data['event_url']
                             })
@@ -25,7 +25,7 @@ def team_or_user_send_join_event(data=None):
     reply_to = settings.DEFAULT_FROM_EMAIL
     body = render_to_string('event/email/team_or_user_send_join_event.html',
                             {
-                                'owner_name': data['owner_name'],
+                                # 'owner_name': data['owner_name'],  # Nga comment
                                 'event_name': data['event_name'],
                                 'event_url': data['event_url'],
                                 'team_or_user_name': data['team_or_user_name'],

@@ -6,10 +6,11 @@ from django.utils.translation import gettext_lazy as _
 class Type(models.Model):
     """ Type model -  Các định danh nghề nghiệp """
     name = models.CharField(max_length=255, verbose_name=_('Name'), help_text=_('backend-dev, front-end dev etc.'), null=True)
-    category = models.ForeignKey(to='main.Category', blank=True, null=True, on_delete=models.CASCADE, verbose_name=_('Category'), help_text=_('Category'))
+    category = models.ForeignKey(to='event.Category', blank=True, null=True, on_delete=models.CASCADE, verbose_name=_('Category'), help_text=_('Category'))
     thumb = CloudinaryField(folder='/type/thumb', null=True, blank=True, verbose_name=_('thumb'), help_text=_('Thumbnail of type'))
 
     class Meta:
+        # db_table = 'hinnox_types'
         db_table = 'hinnox_types'
         verbose_name = _('Type')
         verbose_name_plural = _('Types')

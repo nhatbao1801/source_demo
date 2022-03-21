@@ -29,6 +29,7 @@ from event.models.media import Media
 from event.models.event_participant import EventParticipant
 from event.models.area import Area
 from utils import update_cover, data_from_method_post_put_delete, convert_str_date_datetime
+from django.urls import reverse
 
 
 class AddEventAPI(APIView):
@@ -202,7 +203,7 @@ class EditEventAPI(APIView):
             properties={
                 'event_id': openapi.Schema(type=openapi.TYPE_INTEGER, description='ID sự kiện'),
                 'city_id': openapi.Schema(type=openapi.TYPE_INTEGER, description='ID thành phố'),
-                'areas_id': openapi.Schema(type=openapi.TYPE_STRING,
+                'areas_id': openapi.Schema(type=openapi.TYPE_INTEGER,
                                            description='ID công nghệ và lĩnh vực công nghệ [1, 2, 3,...]'),
                 'event_type_id': openapi.Schema(type=openapi.TYPE_INTEGER, description='Loại event'),
                 'name': openapi.Schema(type=openapi.TYPE_INTEGER, description='Tên event'),
@@ -272,6 +273,7 @@ class EditEventAPI(APIView):
         event_serializer = EventSerializer(data=data_put, instance=event, partial=True)
         if event_serializer.is_valid():
             event_serializer.save()
+            # Nga commet
             if areas_id:
                 areas_id = json.loads(areas_id)
                 event.areas.clear()
@@ -282,8 +284,10 @@ class EditEventAPI(APIView):
                     except IntegrityError:
                         return Response(data={'status': f'area_id={area_id} is not valid or is None'},
                                         status=HTTP_400_BAD_REQUEST)
-            if not isinstance(areas_id, list):
-                return Response(data={'status': 'areas_is must be a list'}, status=HTTP_400_BAD_REQUEST)
+
+            # Nga comment
+            # if not isinstance(areas_id, list):
+            #     return Response(data={'status': 'areas_is must be a list'}, status=HTTP_400_BAD_REQUEST)
             if picture:
                 if isinstance(picture, File) and picture.size == 0:
                     return Response(data={'status': 'picture is empty'}, status=HTTP_400_BAD_REQUEST)
@@ -291,8 +295,9 @@ class EditEventAPI(APIView):
                     cloudinary.api.delete_resources(event.picture.public_id)
                 event.picture = picture
                 event.save()
-                event.picture_url = event.picture.build_url() if event.picture is not None else None
-                event.save()
+                # Nga comment
+                # event.picture_url = event.picture.build_url() if event.picture is not None else None
+                # event.save()
             if cover:
                 medias = Media.objects.filter(Q(event=event) & Q(set_as_cover=True))
                 if medias.exists():
@@ -309,9 +314,9 @@ class EditEventAPI(APIView):
                         pass
                 media = Media.objects.create(event=event, image=cover, set_as_cover=True,
                                              media_type='img')
-
         else:
             return Response(data=event_serializer.errors, status=HTTP_400_BAD_REQUEST)
+        
         if event:
             return Response(data={
                 "status": "updated!",
@@ -338,7 +343,8 @@ class DeleteEvent(APIView):
         operation_summary='Xóa sự kiện',
         manual_parameters=[
             openapi.Parameter('id', in_=openapi.IN_PATH, description='Id của sự kiện', type=openapi.TYPE_INTEGER)
-        ],
+        ],   
+        # IN_PATH
         responses={
             HTTP_200_OK: openapi.Response(
                 description='', examples={
@@ -358,17 +364,20 @@ class DeleteEvent(APIView):
             )
         }
     )
-    def delete(self, request, *args, **kwargs):
+    def delete(self, request, *args, **kwargs): 
         pk = kwargs.get('id')
+        # pk = args.objects.get("id")
         try:
-            event = Event.objects.get(pk=pk)
+            event = Event.objects.get(id=int(pk))
             # CHeck if event's owner is current user sent the request
-            if request.user.id != event.get_owner().user.id:
-                return Response(data={'status': 'Failed', 'message': 'Permission Denied'}, status=HTTP_403_FORBIDDEN)
+            # if request.user.id != event.get_owner().user.id:
+            #     return Response(data={'status': 'Failed', 'message': 'Permission Denied'}, status=HTTP_403_FORBIDDEN)
             event.delete()
             return Response(data={'status': 'Deleted'}, status=HTTP_200_OK)
-        except (Event.DoesNotExist, Exception):
+        except Exception as e:
+            print("EEEE: ", e)
             return Response(data={'status': 'Not found'}, status=HTTP_404_NOT_FOUND)
+    
 
 
 class JoinEventAPI(APIView):
@@ -399,7 +408,7 @@ class JoinEventAPI(APIView):
             )
         }
     )
-    def post(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs): 
 
         try:
             event = Event.objects.get(id=request.data.get('event_id'))
@@ -428,7 +437,7 @@ class JoinEventAPI(APIView):
         domain = request.META['HTTP_HOST']
         url = '{}{}{}'.format('https://', domain, event.url)
         data = {
-            "owner_name": event.get_owner().name,
+            # "owner_name": event.get_owner().name,   # Nga comment
             "event_name": event.name,
             "event_url": url,
             "owner_team_mail": owner_team_mail,
@@ -438,7 +447,7 @@ class JoinEventAPI(APIView):
         # send email to org
         data.update({
             "team_or_user_name": team_or_user_name,
-            "owner_team_mail": event.get_owner().user.email
+            # "owner_team_mail": event.get_owner().user.email    # Nga comment
         })
 
         # send email to team/user
@@ -448,6 +457,15 @@ class JoinEventAPI(APIView):
             return Response(data={"message": "Event join successfully", "event_url": event.url}, status=HTTP_200_OK)
         else:
             return Response(data={"Missing param event_id"}, status=HTTP_400_BAD_REQUEST)
+
+    # def get(self, request, *args, **kwargs):
+    #     try:
+    #         event_info = Event.objects.get(id=request.data.get('event_id'))
+    #     except Event.DoesNotExist:
+    #         return Response(data={"Missing param event_id"}, status=HTTP_400_BAD_REQUEST)
+
+    #     # participant info
+    #     participant = EventParticipant()    
 
 
 class MediasEvent(viewsets.ViewSet):

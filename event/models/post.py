@@ -16,7 +16,7 @@ class Post(models.Model):
     team = models.ForeignKey(to=Team, blank=True, null=True, on_delete=models.PROTECT)
     organization = models.ForeignKey(to=Organization, blank=True, null=True, on_delete=models.PROTECT)
     contest = models.ForeignKey(to=Contest, blank=True, null=True, on_delete=models.CASCADE)
-    event = models.ForeignKey(to=Event, blank=True, null=True, on_delete=models.PROTECT)
+    # event = models.ForeignKey(to=Event, blank=True, null=True, on_delete=models.PROTECT)
     deal = models.ForeignKey(to=Deal, blank=True, null=True, on_delete=models.PROTECT)
     privacy_setting = models.ForeignKey(to=PrivacySetting, on_delete=models.PROTECT)
     content = models.TextField(help_text='Nội dung của bài viết')

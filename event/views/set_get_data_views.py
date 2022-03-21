@@ -185,6 +185,8 @@ class EventViewSet(viewsets.ModelViewSet):
     @swagger_auto_schema(
         operation_summary='Chi tiết event',
         operation_description='Chi tiết event',
+        # manual_parameters=[
+        #     openapi.Parameter('event_id', in_=openapi.IN_QUERY, type=openapi.TYPE_INTEGER, description='Event id')],        
         responses={
             status.HTTP_200_OK: openapi.Response(
                 description='', schema=EventOutSchema.get_schema()

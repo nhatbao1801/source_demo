@@ -45,10 +45,6 @@ admin_site.register(Team)
 admin_site.register(Organization)
 
 
-
-from django.contrib import admin as admin_site
-
-
 schema_view = get_schema_view(
     openapi.Info(
         title="hSpace.biz API",
@@ -63,7 +59,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path('admin/', admin_site.urls),
+    path('', admin_site.urls),
     path(
         'admin/password_reset/',
         auth_views.PasswordResetView.as_view(),

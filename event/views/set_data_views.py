@@ -204,7 +204,7 @@ class EditEventAPI(APIView):
                 'event_id': openapi.Schema(type=openapi.TYPE_INTEGER, description='ID sự kiện'),
                 'city_id': openapi.Schema(type=openapi.TYPE_INTEGER, description='ID thành phố'),
                 'areas_id': openapi.Schema(type=openapi.TYPE_INTEGER,
-                                           description='ID công nghệ và lĩnh vực công nghệ [1, 2, 3,...]'),  # Nga comment
+                                           description='ID công nghệ và lĩnh vực công nghệ [1, 2, 3,...]'),
                 'event_type_id': openapi.Schema(type=openapi.TYPE_INTEGER, description='Loại event'),
                 'name': openapi.Schema(type=openapi.TYPE_INTEGER, description='Tên event'),
                 'from_date': openapi.Schema(type=openapi.TYPE_STRING, description='Ngày bắt đầu',
@@ -316,7 +316,6 @@ class EditEventAPI(APIView):
                                              media_type='img')
         else:
             return Response(data=event_serializer.errors, status=HTTP_400_BAD_REQUEST)
-        # end comment
         
         if event:
             return Response(data={
@@ -438,7 +437,7 @@ class JoinEventAPI(APIView):
         domain = request.META['HTTP_HOST']
         url = '{}{}{}'.format('https://', domain, event.url)
         data = {
-            "owner_name": event.get_owner().name,
+            # "owner_name": event.get_owner().name,   # Nga comment
             "event_name": event.name,
             "event_url": url,
             "owner_team_mail": owner_team_mail,
@@ -448,7 +447,7 @@ class JoinEventAPI(APIView):
         # send email to org
         data.update({
             "team_or_user_name": team_or_user_name,
-            "owner_team_mail": event.get_owner().user.email
+            # "owner_team_mail": event.get_owner().user.email    # Nga comment
         })
 
         # send email to team/user
@@ -458,6 +457,15 @@ class JoinEventAPI(APIView):
             return Response(data={"message": "Event join successfully", "event_url": event.url}, status=HTTP_200_OK)
         else:
             return Response(data={"Missing param event_id"}, status=HTTP_400_BAD_REQUEST)
+
+    # def get(self, request, *args, **kwargs):
+    #     try:
+    #         event_info = Event.objects.get(id=request.data.get('event_id'))
+    #     except Event.DoesNotExist:
+    #         return Response(data={"Missing param event_id"}, status=HTTP_400_BAD_REQUEST)
+
+    #     # participant info
+    #     participant = EventParticipant()    
 
 
 class MediasEvent(viewsets.ViewSet):

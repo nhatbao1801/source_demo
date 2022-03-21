@@ -25,6 +25,9 @@ class AllEventViewAPI(APIView):
         operation_description='Danh sách toàn bộ các sự kiện',
         operation_summary='Danh sách toàn bộ các sự kiện',
         manual_parameters=[
+            # Nga add date to search event
+            openapi.Parameter('date_search', in_=openapi.IN_QUERY, description='date search',
+                               type=openapi.TYPE_STRING, format=openapi.FORMAT_DATETIME),            
             openapi.Parameter('search', in_=openapi.IN_QUERY, description='Từ khóa để search',
                               type=openapi.TYPE_STRING),
             openapi.Parameter('team_id', in_=openapi.IN_QUERY, description='Team id',
@@ -109,10 +112,14 @@ class AllEventViewAPI(APIView):
     )
     def get(self, request, *args, **kwargs):
         search = request.query_params.get('search')
-        
+        # Nga add search event based on date
+        date_search = request.query_params.get('date_search')
         org_id = request.query_params.get('org_id')
         team_id = request.query_params.get('team_id')
         events = Event.objects.all()
+        # Nga add search event based on date
+        if date_search:
+            events = events.filter(date_created=date_search)        
         if search:
             events = events.filter(name__icontains=search)
         if org_id:
@@ -127,9 +134,12 @@ class AllEventViewAPI(APIView):
             res_content = {
                 'id': event.id,
                 'object_creation': {
-                    'name': event.get_owner().name,
-                    'picture': event.get_owner().get_picture_url(),
-                    'url': event.get_owner().url
+                    # 'name': event.get_owner().name,
+                    # 'picture': event.get_owner().get_picture_url(),
+                    # 'url': event.get_owner().url
+                    'name': event.name,
+                    'picture': event.get_picture_url(),
+                    'url': event.url                    
                 },
                 'city_id': event.city.id,
                 'event_type_id': event.type.id,

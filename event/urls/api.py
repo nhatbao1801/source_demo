@@ -11,7 +11,7 @@ urlpatterns = [
     # Lấy danh sách các loại sự kiện
     path('get-event-type/', GetEventTypes.as_view(), name='get-event-type'),
     # Danh sách tất cả các sự kiện hiện có
-    # path('all-event/', AllEventViewAPI.as_view(), name='all-event'),
+    path('all-event/', AllEventViewAPI.as_view(), name='all-event'),
     # Thêm sự kiện
     path('add-event/', AddEventAPI.as_view(), name='add-event'),
     # Lấy list sự kiện

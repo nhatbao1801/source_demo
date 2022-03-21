@@ -88,8 +88,8 @@ class TicketViewSet(viewsets.ModelViewSet):
 
 
 class EventViewSet(viewsets.ModelViewSet):
-    authentication_classes = [JWTAuthentication, SessionAuthentication, TokenAuthentication]
-    permissions_classes = [IsAuthenticated]
+    # authentication_classes = [JWTAuthentication, SessionAuthentication, TokenAuthentication]
+    # permissions_classes = [IsAuthenticated]
     queryset = Event.objects.all()
     serializer_class = EventSerializer
 
@@ -208,8 +208,8 @@ class EventViewSet(viewsets.ModelViewSet):
 
 
 class EventParticipantModelViewSet(viewsets.ModelViewSet):
-    authentication_classes = [JWTAuthentication, SessionAuthentication, TokenAuthentication]
-    permissions_classes = [IsAuthenticated]
+    # authentication_classes = [JWTAuthentication, SessionAuthentication, TokenAuthentication]
+    # permissions_classes = [IsAuthenticated]
     queryset = EventParticipant.objects.all()
     serializer_class = EventParticipantSerializer
 
@@ -285,7 +285,7 @@ class EventSponsorModelViewSet(viewsets.ModelViewSet):
 
 
 class EventCategoryModelViewSet(viewsets.ModelViewSet):
-    authentication_classes = [JWTAuthentication, SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [JWTAuthentication, SessionAuthentication, TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
     queryset = EventCategory.objects.all()
     serializer_class = EventCategorySerializer

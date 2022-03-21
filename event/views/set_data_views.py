@@ -33,8 +33,8 @@ from django.urls import reverse
 
 
 class AddEventAPI(APIView):
-    authentication_classes = [JWTAuthentication, SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [JWTAuthentication, SessionAuthentication, TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
 
     @swagger_auto_schema(
         operation_description='Tạo sự kiện',
@@ -192,8 +192,8 @@ class AddEventAPI(APIView):
 
 
 class EditEventAPI(APIView):
-    authentication_classes = [JWTAuthentication, SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [JWTAuthentication, SessionAuthentication, TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
 
     @swagger_auto_schema(
         operation_description='Cập nhật sự kiện',
@@ -335,8 +335,8 @@ class EditEventAPI(APIView):
 
 
 class DeleteEvent(APIView):
-    authentication_classes = [JWTAuthentication, SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [JWTAuthentication, SessionAuthentication, TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
 
     @swagger_auto_schema(
         operation_description='Xóa sự kiện',
@@ -381,8 +381,8 @@ class DeleteEvent(APIView):
 
 
 class JoinEventAPI(APIView):
-    authentication_classes = [JWTAuthentication, SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [JWTAuthentication, SessionAuthentication, TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
 
     @swagger_auto_schema(
         operation_description='Tham gia sự kiện',

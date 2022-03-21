@@ -18,8 +18,8 @@ from utils.h_paginator import h_paginator
 
 
 class AllEventViewAPI(APIView):
-    authentication_classes = [JWTAuthentication, SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [JWTAuthentication, SessionAuthentication, TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
 
     @swagger_auto_schema(
         operation_description='Danh sách toàn bộ các sự kiện',
@@ -269,8 +269,8 @@ class GetAllEventNearMeAPI(APIView):
 
 
 class GetEventTypes(APIView):
-    authentication_classes = [JWTAuthentication, SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [JWTAuthentication, SessionAuthentication, TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
 
     @swagger_auto_schema(
         operation_description='Danh sách các loại sự kiện',

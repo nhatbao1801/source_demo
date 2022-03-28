@@ -1,6 +1,8 @@
+from datetime import date
 from django.db.models import Q
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
+from elasticsearch_dsl import Date
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -27,7 +29,7 @@ class AllEventViewAPI(APIView):
         manual_parameters=[
             # Nga add date to search event
             openapi.Parameter('date_search', in_=openapi.IN_QUERY, description='date search',
-                               type=openapi.TYPE_STRING, format=openapi.FORMAT_DATETIME),            
+                               type=openapi.TYPE_STRING, format=openapi.FORMAT_DATE),            
             openapi.Parameter('search', in_=openapi.IN_QUERY, description='Từ khóa để search',
                               type=openapi.TYPE_STRING),
             openapi.Parameter('team_id', in_=openapi.IN_QUERY, description='Team id',
@@ -117,9 +119,9 @@ class AllEventViewAPI(APIView):
         org_id = request.query_params.get('org_id')
         team_id = request.query_params.get('team_id')
         events = Event.objects.all()
-        # Nga add search event based on date
+        # Nga added search event based on date
         if date_search:
-            events = events.filter(date_created=date_search)        
+            events = events.filter(date_created__contains=date_search)        
         if search:
             events = events.filter(name__icontains=search)
         if org_id:
@@ -146,7 +148,7 @@ class AllEventViewAPI(APIView):
                 'name': event.name,
                 'date_created': event.date_created,
                 'picture': event.picture.build_url(width=200, height=200, secure=True,
-                                                   crop='thumb') if event.picture is not None else None,
+                                                crop='thumb') if event.picture is not None else None,
                 'url': event.url,
                 'cover': self.get_cover(event),
                 'hash_tag': event.hash_tag,

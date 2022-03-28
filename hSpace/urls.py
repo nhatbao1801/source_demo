@@ -22,6 +22,7 @@ from event.models.sponsor_event import SponsorEvent
 from event.models.media import Media
 from event.models.ticket import Ticket
 from event.views.set_get_data_views import EventViewSet
+from event.models.stage import Stage
 
 
 # Tùy biến trang admin
@@ -43,6 +44,7 @@ admin_site.register(Area)
 admin_site.register(City)
 admin_site.register(Team)
 admin_site.register(Organization)
+admin_site.register(Stage)
 
 
 schema_view = get_schema_view(

@@ -1,5 +1,5 @@
 PROJECT_NAME=eventcenter.api.hspace.biz
 GIT_SSH_REPO=https://gitlab.com/hspace-biz/backend-team/eventcenter.api.hspace.biz.git
 SERVICE_NAME="deploy_$PROJECT_NAME"
-PORT=8009
+PORT=8010
 

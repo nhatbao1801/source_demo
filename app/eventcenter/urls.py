@@ -22,7 +22,7 @@ logger.addHandler(stream_handler)
 
 def get_current_host(self, request: Request) -> str:
     # TODO: Stup https for scheme
-    scheme = request.scheme
+    scheme = 'https'
     logger.info(f'{scheme}---{request.get_host()}')
     return f'https://{request.get_host()}'
 

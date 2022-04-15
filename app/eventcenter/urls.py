@@ -1,4 +1,5 @@
 import logging
+from re import U
 from urllib.parse import urlsplit
 
 from django.conf import settings
@@ -62,6 +63,7 @@ schema_view = get_schema_view(
         contact=openapi.Contact(email="support@hspace.biz"),
         license=openapi.License(name="BSD License"),
     ),
+    url='https://event.api.hspace.biz/',
     public=True,
     # permission_classes=(permissions.IsAuthenticated, permissions.IsAdminUser),
     permission_classes=(permissions.AllowAny,),

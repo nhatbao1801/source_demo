@@ -3,7 +3,7 @@ from event.models.base_model import BaseModel
 from django.utils.timezone import now
 
 class Event(BaseModel):
-    owner = models.ManyToManyField(to='account.RefAccount', help_text='Người đứng ra tổ chức sự kiện', blank=True, related_name="%(app_label)s_%(class)s_owner")
+    owner = models.ForeignKey(to='account.RefAccount', help_text='Người đứng ra tổ chức sự kiện', blank=True, null=True, related_name="%(app_label)s_%(class)s_owner", on_delete=models.CASCADE)
     name = models.CharField(max_length=255, help_text='Event name')
     cover = models.CharField(max_length=255, help_text='Cover name')
     venue = models.CharField(max_length=300, blank=True, null=True, help_text='Tên địa điểm tổ chức sự kiện')
@@ -15,6 +15,8 @@ class Event(BaseModel):
     privacy = models.ForeignKey(to="event.Privacy", blank=True, null=True, on_delete=models.CASCADE)
     description = models.TextField(help_text='Description', blank=True, null=True)
     co_host = models.ManyToManyField(to='account.RefAccount', blank=True, related_name="%(app_label)s_%(class)s_co_hosts")
+    formality = models.ForeignKey(to='event.Formality', blank=True, on_delete=models.CASCADE, null=True)
+    event_type = models.ForeignKey(to='event.EventType', blank=True, on_delete=models.CASCADE, null=True)
     
 
     class Meta:

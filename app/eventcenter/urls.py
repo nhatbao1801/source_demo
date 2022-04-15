@@ -54,9 +54,10 @@ if bool(settings.DEBUG):
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="eventcenter.api.hspace.biz",
+        title="event.api.hspace.biz",
+        url='https://event.api.hspace.biz/',
         default_version='v1',
-        description="eventcenter API Docs",
+        description="event API Docs",
         terms_of_service="https://www.google.com/policies/terms/",
         contact=openapi.Contact(email="support@hspace.biz"),
         license=openapi.License(name="BSD License"),

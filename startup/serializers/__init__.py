@@ -1,4 +1,0 @@
-from kpi_serializer import KPISerializer
-from fund_raising_serializer import FundRaisingSerializer
-from idea_serializer import IdeaSerializer
-from team_serializer import TeamSerializer

@@ -19,10 +19,11 @@ class EventSerializerOut(serializers.ModelSerializer):
     privacy_info = serializers.SerializerMethodField('get_privacy_info')
     formality_info = serializers.SerializerMethodField('get_formality_info')
     event_type_info = serializers.SerializerMethodField('get_event_type_info')
+    event_participant_info = serializers.SerializerMethodField('get_event_participant_info')
 
     class Meta:
         model = Event
-        fields = ['owner_info', 'name', 'cover', 'venue', 'tagline', 'description', 'from_date', 'to_date', 'users_interested_in_info', 'privacy_info', 'co_host_info', 'formality_info', 'event_type_info' ]
+        fields = ['owner_info', 'name', 'cover', 'venue', 'tagline', 'description', 'from_date', 'to_date', 'users_interested_in_info', 'privacy_info', 'co_host_info', 'formality_info', 'event_type_info', 'event_participant_info']
 
 
     @swagger_serializer_method(serializer_or_field=RefAccountSerializerOut)
@@ -61,3 +62,11 @@ class EventSerializerOut(serializers.ModelSerializer):
         if not instance.event_type:
             return None
         return EventTypeSerializerOut(instance=instance.event_type).data
+
+
+    # @swagger_serializer_method(serializer_or_field=EventTypeSerializerOut)
+    # TODO participants
+    def get_event_participant_info(self, instance):
+        return []
+
+    

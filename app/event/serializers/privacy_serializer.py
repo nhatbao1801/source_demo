@@ -13,4 +13,4 @@ class PrivacySerializerOut(serializers.ModelSerializer):
 
     class Meta:
         model = Privacy
-        fields = ['code', 'name']
+        fields = ['id', 'code', 'name']

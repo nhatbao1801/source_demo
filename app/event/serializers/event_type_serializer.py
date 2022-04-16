@@ -12,4 +12,4 @@ class EventTypeSerializerOut(serializers.ModelSerializer):
 
     class Meta:
         model = EventType
-        fields = ['code', 'name']
+        fields = ['id', 'code', 'name']

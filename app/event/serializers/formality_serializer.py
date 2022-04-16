@@ -12,4 +12,4 @@ class FormalitySerializerOut(serializers.ModelSerializer):
 
     class Meta:
         model = Formality
-        fields = ['code', 'name']
+        fields = ['id', 'code', 'name']

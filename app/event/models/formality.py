@@ -3,7 +3,7 @@ from event.models.base_model import BaseModel
 
 
 class Formality(BaseModel):
-    name = models.CharField(primary_key=True, max_length=255, help_text='Formality name')
+    name = models.CharField(max_length=255, help_text='Formality name')
     code = models.CharField(max_length=255, help_text='Formality code')
 
 

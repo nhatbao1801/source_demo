@@ -4,8 +4,8 @@ from django.utils.timezone import now
 
 class Event(BaseModel):
     owner = models.ForeignKey(to='account.RefAccount', help_text='Người đứng ra tổ chức sự kiện', blank=True, null=True, related_name="%(app_label)s_%(class)s_owner", on_delete=models.CASCADE)
-    name = models.CharField(max_length=255, help_text='Event name', blank=True, null=True)
-    cover = models.CharField(max_length=255, help_text='Cover name')
+    name = models.CharField(max_length=255, help_text='Event name')
+    cover = models.CharField(max_length=255, help_text='Cover name', blank=True, null=True)
     venue = models.CharField(max_length=300, blank=True, null=True, help_text='Tên địa điểm tổ chức sự kiện')
     tagline = models.CharField(max_length=100, blank=True, null=True, help_text='Tag giúp tìm kiếm event trong hinnox')
     description = models.TextField(blank=True, null=True, help_text='Mô tả về sự kiện')

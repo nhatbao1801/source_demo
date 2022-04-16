@@ -8,5 +8,5 @@ urlpatterns = [
 
 # Privacy Router CRUD
 privacy_router = DefaultRouter()
-privacy_router.register(r'privacy', PrivacyCRUDViewSet, basename='privacy')
+privacy_router.register(r'privacy/', PrivacyCRUDViewSet, basename='privacy')
 urlpatterns += privacy_router.urls

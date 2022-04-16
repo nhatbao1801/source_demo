@@ -1,11 +1,13 @@
 import logging
+
 from django.http import JsonResponse
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
+from event.models.event import Event
+from event.serializers.event_serializer import (EventSerializer,
+                                                EventSerializerOut)
 from rest_framework import mixins, pagination, status, viewsets
 from rest_framework.permissions import AllowAny
-from event.models.event import Event
-from event.serializers.event_serializer import EventSerializer, EventSerializerOut
 from utils.base_class_schema_pagination import PaginatorInspectorClass
 from utils.paginator import s_paginator
 
@@ -25,7 +27,7 @@ class EventCRUDViewSet(
     authentication_classes = []
     permission_classes = [AllowAny]
     serializer_class = EventSerializer
-    queryset = Event.objects.all()
+    queryset = Event.objects.all().order_by('-from_date')
     pagination_class = pagination.PageNumberPagination
 
     def get_serializer_class(self):

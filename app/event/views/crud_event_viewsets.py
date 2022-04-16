@@ -5,7 +5,7 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework import mixins, pagination, status, viewsets
 from rest_framework.permissions import AllowAny
 from event.models.event import Event
-from event.serializers.event_serializer import EventSerializer
+from event.serializers.event_serializer import EventSerializer, EventSerializerOut
 from utils.base_class_schema_pagination import PaginatorInspectorClass
 from utils.paginator import s_paginator
 
@@ -30,7 +30,7 @@ class EventCRUDViewSet(
 
     def get_serializer_class(self):
         if 'list' in self.action or 'retrieve' in self.action:
-            self.serializer_class = EventSerializer
+            self.serializer_class = EventSerializerOut
         return super().get_serializer_class()
 
     @swagger_auto_schema(

@@ -7,3 +7,10 @@ class PrivacySerializer(serializers.ModelSerializer):
     class Meta:
         model = Privacy
         fields = '__all__'
+
+
+class PrivacySerializerOut(serializers.ModelSerializer):
+
+    class Meta:
+        model = Privacy
+        fields = ['code', 'name']

@@ -8,5 +8,5 @@ urlpatterns = [
 
 # Event Type Router CRUD
 event_type_router = DefaultRouter()
-event_type_router.register(r'event-type/', EventTypeCRUDViewSet, basename='event-type')
+event_type_router.register(r'event-type', EventTypeCRUDViewSet, basename='event-type')
 urlpatterns += event_type_router.urls

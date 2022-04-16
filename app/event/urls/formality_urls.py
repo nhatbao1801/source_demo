@@ -8,5 +8,5 @@ urlpatterns = [
 
 # Formality Router CRUD
 formalityt_router = DefaultRouter()
-formalityt_router.register(r'formality/', FormalityCRUDViewSet, basename='formality')
+formalityt_router.register(r'formality', FormalityCRUDViewSet, basename='formality')
 urlpatterns += formalityt_router.urls

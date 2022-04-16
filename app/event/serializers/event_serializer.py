@@ -31,14 +31,14 @@ class EventSerializerOut(serializers.ModelSerializer):
             return None
         return RefAccountSerializerOut(instance=instance.owner).data
     
-    @swagger_serializer_method(serializer_or_field=RefAccountSerializerOut)
+    @swagger_serializer_method(serializer_or_field=RefAccountSerializerOut(many=True))
     def get_co_host_info(self, instance):
         if not instance.co_host:
             return []
         return RefAccountSerializerOut(instance=instance.co_host, many=True).data
 
 
-    @swagger_serializer_method(serializer_or_field=RefAccountSerializerOut)
+    @swagger_serializer_method(serializer_or_field=RefAccountSerializerOut(many=True))
     def get_users_interested_in_info(self, instance):
         if not instance.users_interested_in:
             return []

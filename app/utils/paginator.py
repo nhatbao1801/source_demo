@@ -15,6 +15,14 @@ def s_paginator(object_list=None, request: Request = None, not_queryset: bool = 
     if not not_queryset and not object_list.ordered:
         object_list = object_list.order_by('id')
 
+    if request.GET.get('nolimit'):
+        if not request.GET._mutable:
+            request.GET._mutable = True
+        if not_queryset:
+            request.GET['limit'] = len(object_list)
+        else:
+            request.GET['limit'] = object_list.count()
+
     paginator = Paginator(object_list, request.GET.get('limit') or 10)
     page = request.GET.get('page') or 1
     try:

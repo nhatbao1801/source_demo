@@ -1,10 +1,11 @@
 from account.serializers.ref_account_serializer import RefAccountSerializerOut
-from event.serializers.privacy_serializer import PrivacySerializerOut
+from drf_yasg.utils import swagger_serializer_method
+from event.models.event import Event
 from event.serializers.event_type_serializer import EventTypeSerializerOut
 from event.serializers.formality_serializer import FormalitySerializerOut
-from event.models.event import Event
+from event.serializers.privacy_serializer import PrivacySerializerOut
 from rest_framework import serializers
-from drf_yasg.utils import swagger_serializer_method
+
 
 class EventSerializer(serializers.ModelSerializer):
 
@@ -23,7 +24,7 @@ class EventSerializerOut(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = ['owner_info', 'name', 'cover', 'venue', 'tagline', 'description', 'from_date', 'to_date', 'users_interested_in_info', 'privacy_info', 'co_host_info', 'formality_info', 'event_type_info', 'event_participant_info']
+        fields = ['id', 'owner_info', 'name', 'cover', 'venue', 'tagline', 'description', 'from_date', 'to_date', 'users_interested_in_info', 'privacy_info', 'co_host_info', 'formality_info', 'event_type_info', 'event_participant_info']
 
 
     @swagger_serializer_method(serializer_or_field=RefAccountSerializerOut)

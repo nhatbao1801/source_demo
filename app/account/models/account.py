@@ -5,7 +5,15 @@ from django.db import models
 class RefAccount(AbstractUser):
     id = models.TextField(primary_key=True, default=uuid.uuid4().hex)
     full_name = models.CharField(max_length=255, blank=True, null=True, help_text='Full name')
-    username = models.CharField(max_length=255, blank=True, null=True, help_text='Username')
+    username = models.CharField(
+        ('username'),
+        max_length=150,
+        unique=True,
+        help_text=('Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.'),
+        error_messages={
+            'unique': ("A user with that username already exists."),
+        },
+    )
     user_id = models.CharField(
         max_length=24,
         blank=True,

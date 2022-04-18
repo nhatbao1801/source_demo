@@ -29,7 +29,7 @@ class RefAccountViewSet(mixins.ListModelMixin,
     """ViewSet for Ref Account"""
     authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [AllowAny]
-    serializer_class = RefAccountSerializerOut
+    serializer_class = RefAccountSerializerIn
     queryset = RefAccount.objects.all()
     pagination_class = pagination.PageNumberPagination
 

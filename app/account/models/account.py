@@ -5,6 +5,7 @@ from django.db import models
 class RefAccount(AbstractUser):
     id = models.TextField(primary_key=True, default=uuid.uuid4().hex)
     full_name = models.CharField(max_length=255, blank=True, null=True, help_text='Full name')
+    username = models.CharField(max_length=255, blank=True, null=True, help_text='Username')
     user_id = models.CharField(
         max_length=24,
         blank=True,

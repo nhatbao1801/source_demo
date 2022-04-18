@@ -3,4 +3,6 @@ from django.contrib import admin
 from .models import RefAccount
 
 # Register your models here.
-admin.site.register(RefAccount)
+class RefAccountAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user_id', 'full_name')
+admin.site.register(RefAccount, RefAccountAdmin)

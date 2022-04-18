@@ -12,4 +12,4 @@ class RefAccountSerializerIn(serializers.ModelSerializer):
 class RefAccountSerializerOut(serializers.ModelSerializer):
     class Meta:
         model = RefAccount
-        fields = ['id', 'full_name']
+        fields = ['id', 'user_id', 'full_name']

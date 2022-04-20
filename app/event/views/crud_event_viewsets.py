@@ -89,4 +89,11 @@ class EventCRUDViewSet(
         operation_summary='Xóa sự kiện', tags=['event']
     )
     def destroy(self, request, *args, **kwargs):
-        return super().destroy(request, *args, **kwargs)
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return JsonResponse(
+            data={
+                'status': 'HTTP_200_OK',
+                'msg': 'Success'
+            }, status=status.HTTP_200_OK
+        )

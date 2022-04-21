@@ -137,7 +137,7 @@ class JoinEventAPI(APIView):
         event_participant = EventParticipant()
         event_participant.event_id = request.data.get('event_id')
         event_participant.uid = request.data.get('uid')
-        event_participant.stage = request.data.get('JOINED')
+        event_participant.stage = 'JOINED'
         event_participant.save()
 
         return Response(data={"message": "Event join successfully", "event_url": event.url}, status=status.HTTP_200_OK)
@@ -180,7 +180,7 @@ class InviteEventAPI(APIView):
         event_participant.event_id = request.data.get('event_id')
         event_participant.uid = request.data.get('uid')
         event_participant.inviter_id = request.data.get('inviter_id')
-        event_participant.stage = request.data.get('INVITED')
+        event_participant.stage = 'INVITED'
         event_participant.save()
 
         # Todo mời tham gia sự kiện

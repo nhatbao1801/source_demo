@@ -67,9 +67,9 @@ class EventSerializerOut(serializers.ModelSerializer):
         return EventTypeSerializerOut(instance=instance.event_type).data
 
 
-    @swagger_serializer_method(serializer_or_field=EventParticipantOut)
+    @swagger_serializer_method(serializer_or_field=RefAccountSerializerOut)
     def get_event_participant_info(self, instance):
-        event_participant = EventParticipant.objects.filter(event_id=instance.id)
-        return EventParticipantOut(instance=event_participant, many=True).data
+        event_participant = EventParticipant.objects.filter(event_id=instance.id).values_list('uid', flat=True)
+        return RefAccountSerializerOut(instance=event_participant, many=True).data
 
     

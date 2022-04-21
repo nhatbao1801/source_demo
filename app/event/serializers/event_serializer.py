@@ -1,5 +1,6 @@
 from account.serializers.ref_account_serializer import RefAccountSerializerOut
 from drf_yasg.utils import swagger_serializer_method
+from event.serializers.event_participant_serializer import EventParticipantOut
 from event.models.event import Event
 from event.serializers.event_type_serializer import EventTypeSerializerOut
 from event.serializers.formality_serializer import FormalitySerializerOut
@@ -65,9 +66,8 @@ class EventSerializerOut(serializers.ModelSerializer):
         return EventTypeSerializerOut(instance=instance.event_type).data
 
 
-    # @swagger_serializer_method(serializer_or_field=EventTypeSerializerOut)
-    # TODO participants
+    @swagger_serializer_method(serializer_or_field=EventParticipantOut)
     def get_event_participant_info(self, instance):
-        return []
+        return EventParticipantOut(instance=instance.uid, many=True).data
 
     

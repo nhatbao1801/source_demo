@@ -102,6 +102,9 @@ class EventCRUDViewSet(
         )
 
 class JoinEventAPI(APIView):
+    authentication_classes = []
+    permission_classes = [AllowAny]
+
     @swagger_auto_schema(
         operation_description='Tham gia sự kiện',
         operation_summary='Tham gia sự kiện',
@@ -141,6 +144,8 @@ class JoinEventAPI(APIView):
 
 
 class InviteEventAPI(APIView):
+    authentication_classes = []
+    permission_classes = [AllowAny]
     @swagger_auto_schema(
         operation_description='Mời Tham gia sự kiện',
         operation_summary='Mời Tham gia sự kiện',

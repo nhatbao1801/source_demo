@@ -1,5 +1,6 @@
 from account.serializers.ref_account_serializer import RefAccountSerializerOut
 from drf_yasg.utils import swagger_serializer_method
+from account.models.account import RefAccount
 from event.models.event_participant import EventParticipant
 from event.serializers.event_participant_serializer import EventParticipantOut
 from event.models.event import Event
@@ -70,9 +71,5 @@ class EventSerializerOut(serializers.ModelSerializer):
     @swagger_serializer_method(serializer_or_field=RefAccountSerializerOut)
     def get_event_participant_info(self, instance):
         event_participant = list(EventParticipant.objects.filter(event_id=instance.id).values_list('uid', flat=True))
-        # return RefAccountSerializerOut(instance=event_participant, many=True).data
-        return {
-            "data": event_participant
-        }
-
+        return RefAccountSerializerOut(instance=RefAccount.objects.filter(id__in=event_participant), many=True).data
     

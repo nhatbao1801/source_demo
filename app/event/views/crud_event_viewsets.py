@@ -3,6 +3,7 @@ import logging
 from django.http import JsonResponse
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
+from event.models.event_participant import EventParticipant
 from event.models.event import Event
 from event.serializers.event_serializer import (EventSerializer,
                                                 EventSerializerOut)
@@ -10,6 +11,8 @@ from rest_framework import mixins, pagination, status, viewsets
 from rest_framework.permissions import AllowAny
 from utils.base_class_schema_pagination import PaginatorInspectorClass
 from utils.paginator import s_paginator
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -97,3 +100,84 @@ class EventCRUDViewSet(
                 'msg': 'Success'
             }, status=status.HTTP_200_OK
         )
+
+class JoinEventAPI(APIView):
+    @swagger_auto_schema(
+        operation_description='Tham gia sự kiện',
+        operation_summary='Tham gia sự kiện',
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                "event_id": openapi.Schema(type=openapi.TYPE_INTEGER),
+                "uid": openapi.Schema(type=openapi.TYPE_INTEGER)
+            }
+        ),
+        responses={
+            status.HTTP_200_OK: openapi.Response(
+                description='', examples={
+                    "status": "Update successfully"
+                }
+            ),
+            status.HTTP_404_NOT_FOUND: openapi.Response(
+                description='', examples={
+                    "status": "Event not found",
+                }
+            )
+        }
+    )
+    def post(self, request, *args, **kwargs): 
+        try:
+            event = Event.objects.get(id=request.data.get('event_id'))
+        except Event.DoesNotExist:
+            return Response(data={"Missing param event_id"}, status=status.HTTP_400_BAD_REQUEST)
+
+        event_participant = EventParticipant()
+        event_participant.event_id = request.data.get('event_id')
+        event_participant.uid = request.data.get('uid')
+        event_participant.stage = request.data.get('JOINED')
+        event_participant.save()
+
+        return Response(data={"message": "Event join successfully", "event_url": event.url}, status=status.HTTP_200_OK)
+
+
+class InviteEventAPI(APIView):
+    @swagger_auto_schema(
+        operation_description='Mời Tham gia sự kiện',
+        operation_summary='Mời Tham gia sự kiện',
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                "event_id": openapi.Schema(type=openapi.TYPE_INTEGER),
+                "uid": openapi.Schema(type=openapi.TYPE_INTEGER),
+                "inviter_id": openapi.Schema(type=openapi.TYPE_INTEGER),
+            }
+        ),
+        responses={
+            status.HTTP_200_OK: openapi.Response(
+                description='', examples={
+                    "status": "Update successfully"
+                }
+            ),
+            status.HTTP_404_NOT_FOUND: openapi.Response(
+                description='', examples={
+                    "status": "Event not found",
+                }
+            )
+        }
+    )
+    def post(self, request, *args, **kwargs): 
+        try:
+            event = Event.objects.get(id=request.data.get('event_id'))
+        except Event.DoesNotExist:
+            return Response(data={"Missing param event_id"}, status=status.HTTP_400_BAD_REQUEST)
+
+        event_participant = EventParticipant()
+        event_participant.event_id = request.data.get('event_id')
+        event_participant.uid = request.data.get('uid')
+        event_participant.inviter_id = request.data.get('inviter_id')
+        event_participant.stage = request.data.get('INVITED')
+        event_participant.save()
+
+        # Todo mời tham gia sự kiện
+
+        return Response(data={"message": "Event invited successfully", "event_url": event.url}, status=status.HTTP_200_OK)

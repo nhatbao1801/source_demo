@@ -140,7 +140,7 @@ class JoinEventAPI(APIView):
         event_participant.stage = 'JOINED'
         event_participant.save()
 
-        return Response(data={"message": "Event join successfully", "event_url": event.url}, status=status.HTTP_200_OK)
+        return Response(data={"message": "Event join successfully"}, status=status.HTTP_200_OK)
 
 
 class InviteEventAPI(APIView):
@@ -185,4 +185,4 @@ class InviteEventAPI(APIView):
 
         # Todo mời tham gia sự kiện
 
-        return Response(data={"message": "Event invited successfully", "event_url": event.url}, status=status.HTTP_200_OK)
+        return Response(data={"message": "Event invited successfully"}, status=status.HTTP_200_OK)

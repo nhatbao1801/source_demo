@@ -134,6 +134,10 @@ class JoinEventAPI(APIView):
         except Event.DoesNotExist:
             return Response(data={"Missing param event_id"}, status=status.HTTP_400_BAD_REQUEST)
 
+        is_joined = EventParticipant.objects.filter(uid_id=request.data.get('uid'), event_id=request.data.get('event_id'), stage='JOINED')
+        if is_joined.count() > 0:
+            return Response(data={"You has joined this event"}, status=status.HTTP_400_BAD_REQUEST)
+            
         event_participant = EventParticipant()
         event_participant.event_id = request.data.get('event_id')
         event_participant.uid_id = request.data.get('uid')

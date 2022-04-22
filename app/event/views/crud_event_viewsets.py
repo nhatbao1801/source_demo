@@ -112,7 +112,7 @@ class JoinEventAPI(APIView):
             type=openapi.TYPE_OBJECT,
             properties={
                 "event_id": openapi.Schema(type=openapi.TYPE_INTEGER),
-                "uid": openapi.Schema(type=openapi.TYPE_INTEGER)
+                "uid": openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_STRING))
             }
         ),
         responses={
@@ -134,11 +134,11 @@ class JoinEventAPI(APIView):
         except Event.DoesNotExist:
             return Response(data={"Missing param event_id"}, status=status.HTTP_400_BAD_REQUEST)
 
-        event_participant = EventParticipant()
-        event_participant.event_id = request.data.get('event_id')
-        event_participant.uid_id = request.data.get('uid')
-        event_participant.stage = 'JOINED'
-        event_participant.save()
+        participants = []
+        event_id = request.data.get('event_id')
+        for uid in request.data.get('uid'):
+            participants.append(EventParticipant({"event_id": event_id, "uid_id": uid, "stage": 'JOINED'}))
+        EventParticipant.objects.bulk_create(participants)
 
         return Response(data={"message": "Event join successfully"}, status=status.HTTP_200_OK)
 

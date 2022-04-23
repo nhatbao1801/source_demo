@@ -35,7 +35,8 @@ class EventSerializerOut(serializers.ModelSerializer):
         request = None
         if self.context.get('request'):
             request = self.context.get('request')
-        if  instance.owner.id == request.uid:
+            uid = request.GET.get('uid')
+        if  instance.owner.id == uid:
             return True
         return False
 
@@ -44,8 +45,9 @@ class EventSerializerOut(serializers.ModelSerializer):
         participants = []
         if self.context.get('request'):
             request = self.context.get('request')
+            uid = request.GET.get('uid')
             participants = list(EventParticipant.objects.filter(event_id=instance.id).values_list('uid', flat=True))
-        if request.uid in participants:
+        if uid in participants:
             return True
         return False
 

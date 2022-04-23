@@ -24,11 +24,30 @@ class EventSerializerOut(serializers.ModelSerializer):
     formality_info = serializers.SerializerMethodField('get_formality_info')
     event_type_info = serializers.SerializerMethodField('get_event_type_info')
     event_participant_info = serializers.SerializerMethodField('get_event_participant_info')
+    is_owner = serializers.SerializerMethodField('get_is_owner')
+    is_joined = serializers.SerializerMethodField('get_is_joined')
 
     class Meta:
         model = Event
         fields = ['id', 'owner_info', 'name', 'cover', 'venue', 'tagline', 'description', 'from_date', 'to_date', 'users_interested_in_info', 'privacy_info', 'co_host_info', 'formality_info', 'event_type_info', 'event_participant_info']
 
+    def get_is_owner(self, instance):
+        request = None
+        if self.context.get('request'):
+            request = self.context.get('request')
+        if  instance.owner.id == request.uid:
+            return True
+        return False
+
+    def get_is_joined(self, instance):
+        request = None
+        participants = []
+        if self.context.get('request'):
+            request = self.context.get('request')
+            participants = list(EventParticipant.objects.filter(event_id=instance.id).values_list('uid', flat=True))
+        if request.uid in participants:
+            return True
+        return False
 
     @swagger_serializer_method(serializer_or_field=RefAccountSerializerOut)
     def get_ref_account_info(self, instance):

@@ -3,7 +3,7 @@ import logging
 from django.http import JsonResponse
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-from app.event.serializers.event_participant_serializer import EventParticipantOut, EventParticipantSerializer
+from event.serializers.event_participant_serializer import EventParticipantOut, EventParticipantSerializer
 from event.models.event_participant import EventParticipant
 from event.models.event import Event
 from event.serializers.event_serializer import (EventSerializer,

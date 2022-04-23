@@ -29,7 +29,7 @@ class EventSerializerOut(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = ['id', 'owner_info', 'name', 'cover', 'venue', 'tagline', 'description', 'from_date', 'to_date', 'users_interested_in_info', 'privacy_info', 'co_host_info', 'formality_info', 'event_type_info', 'event_participant_info']
+        fields = ['id','is_owner', 'is_joined', 'owner_info', 'name', 'cover', 'venue', 'tagline', 'description', 'from_date', 'to_date', 'users_interested_in_info', 'privacy_info', 'co_host_info', 'formality_info', 'event_type_info', 'event_participant_info']
 
     def get_is_owner(self, instance):
         request = None

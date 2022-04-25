@@ -58,7 +58,8 @@ class EventParticipantCRUDViewSet(
     )
     def list(self, request, *args, **kwargs):
         _serializer = self.get_serializer_class()
-        data, metadata = s_paginator(object_list=self.get_queryset(), request=request)
+        _queryset = EventParticipant.objects.filter(is_deleted=False, event_id=request.GET.get('event_id'))
+        data, metadata = s_paginator(object_list=_queryset, request=request)
         data_serializer = _serializer(data, many=True, context={'request': request}).data
         return JsonResponse(
             data={

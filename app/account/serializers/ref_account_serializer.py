@@ -13,3 +13,9 @@ class RefAccountSerializerOut(serializers.ModelSerializer):
     class Meta:
         model = RefAccount
         fields = ['id', 'user_id', 'full_name']
+
+
+class EventParcitipantSerializerInfo(serializers.ModelSerializer):
+    class Meta:
+        model = RefAccount
+        fields = ['id', 'user_id', 'full_name', 'email']

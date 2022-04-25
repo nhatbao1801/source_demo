@@ -3,6 +3,7 @@ import logging
 from django.http import JsonResponse
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
+from account.serializers.ref_account_serializer import EventParcitipantSerializerInfo
 from event.serializers.event_participant_serializer import EventParticipantOut, EventParticipantSerializer
 from event.models.event_participant import EventParticipant
 from event.models.event import Event
@@ -57,7 +58,7 @@ class EventParticipantCRUDViewSet(
         ], paginator_inspectors=[PaginatorInspectorClass], tags=['event-participant']
     )
     def list(self, request, *args, **kwargs):
-        _serializer = self.get_serializer_class()
+        _serializer = EventParcitipantSerializerInfo
         _queryset = EventParticipant.objects.filter(is_deleted=False, event_id=request.GET.get('event_id'))
         data, metadata = s_paginator(object_list=_queryset, request=request)
         data_serializer = _serializer(data, many=True, context={'request': request}).data

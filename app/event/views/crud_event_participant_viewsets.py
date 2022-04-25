@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from account.serializers.ref_account_serializer import EventParcitipantSerializerInfo
+from account.models.account import RefAccount
 from event.serializers.event_participant_serializer import EventParticipantOut, EventParticipantSerializer
 from event.models.event_participant import EventParticipant
 from event.models.event import Event
@@ -59,9 +60,9 @@ class EventParticipantCRUDViewSet(
     )
     def list(self, request, *args, **kwargs):
         _serializer = EventParcitipantSerializerInfo
-        _queryset = EventParticipant.objects.filter(is_deleted=False, event_id=request.GET.get('event_id')).values_list('uid', flat=True)
-        
-        data, metadata = s_paginator(object_list=_queryset, request=request)
+        _queryset = list(EventParticipant.objects.filter(is_deleted=False, event_id=request.GET.get('event_id')).values_list('uid', flat=True))
+        _participants = RefAccount.objects.filter(id__in=_queryset)
+        data, metadata = s_paginator(object_list=_participants, request=request)
         data_serializer = _serializer(data, many=True, context={'request': request}).data
         return JsonResponse(
             data={

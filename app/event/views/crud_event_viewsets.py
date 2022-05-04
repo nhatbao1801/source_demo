@@ -238,8 +238,14 @@ class InviteEventAPI(APIView):
 
         participants = []
         event_id = request.data.get('event_id')
+        inviter_id = request.data.get('inviter_id')
         for uid in request.data.get('uid'):
-            participants.append(EventParticipant({"event_id": event_id, "uid_id": uid, 'inviter_id': request.data.get('inviter_id'), "stage": 'INVITED'}))
+            ep = EventParticipant()
+            ep.event_id = event_id
+            ep.uid_id = uid
+            ep.inviter_id = inviter_id
+            ep.stage = 'INVITED'
+            participants.append(ep)
         EventParticipant.objects.bulk_create(participants)
 
         # Todo mời tham gia sự kiện

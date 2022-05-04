@@ -1,5 +1,5 @@
 import logging
-
+from datetime import datetime
 from django.http import JsonResponse
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
@@ -93,7 +93,7 @@ class EventCRUDViewSet(
         is_host = self.request.GET.get('is_host')
         is_joined = self.request.GET.get('is_joined')
         date_out = self.request.GET.get('date_out')
-        uid = '620cc37fd167266bacb9d24c'
+        uid = self.request.GET.get('uid')
 
         _queryset = Event.objects.filter()
         if search:
@@ -106,7 +106,13 @@ class EventCRUDViewSet(
              _queryset = _queryset.filter(to_date__gte=date_to)
         if is_invited:
             _queryset = _queryset.filter(Q(eventparticipant__inviter_id__isnull=False), Q(eventparticipant__uid=uid))
-        print(_queryset.query)
+        if is_host:
+            _queryset = _queryset.filter(owner_id=uid)
+        if is_joined:
+            _queryset = _queryset.filter(Q(eventparticipant__uid=uid))
+        if date_out:
+            now = datetime.today().isoformat()
+            _queryset = _queryset.filter(to_date__lt=now)
         _queryset = _queryset.order_by('-from_date')
         data, metadata = s_paginator(object_list=_queryset, request=request)
         data_serializer = _serializer(data, many=True, context={'request': request}).data

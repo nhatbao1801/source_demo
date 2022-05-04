@@ -242,7 +242,7 @@ class InviteEventAPI(APIView):
         for uid in request.data.get('uid'):
             ep = EventParticipant()
             ep.event_id = event_id
-            ep.uid = str(uid)
+            ep.uid = uid
             ep.inviter_id = inviter_id
             ep.stage = 'INVITED'
             participants.append(ep)

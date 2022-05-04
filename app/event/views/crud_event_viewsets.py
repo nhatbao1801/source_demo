@@ -244,7 +244,7 @@ class InviteEventAPI(APIView):
         for uid in uids:
             ep = EventParticipant()
             ep.event_id = event_id
-            ep.uid = uid
+            ep.uid_id = uid
             ep.inviter_id = inviter_id
             ep.stage = 'INVITED'
             participants.append(ep)

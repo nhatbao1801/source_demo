@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = 1
 
 # ALLOWED_HOSTS = ['localhost', '127.0.0.1', '']
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '13.229.29.156', '172.29.32.100', 'event.api.hspace.biz']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '13.229.29.156', '172.29.217.44', 'event.api.hspace.biz']
 
 # Application definition
 INSTALLED_APPS = [

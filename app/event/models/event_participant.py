@@ -19,8 +19,6 @@ class EventParticipant(BaseModel):
         verbose_name = 'Event participant'
         verbose_name_plural = 'Event participants'
 
-    def __str__(self):
-        return self.name
 
     def save(self, *args, **kwargs):
         self.code = uuid.uuid4()

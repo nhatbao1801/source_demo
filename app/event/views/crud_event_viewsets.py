@@ -13,6 +13,7 @@ from utils.base_class_schema_pagination import PaginatorInspectorClass
 from utils.paginator import s_paginator
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.db.models import Q
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -49,11 +50,65 @@ class EventCRUDViewSet(
                 'limit', type=openapi.TYPE_INTEGER, in_=openapi.IN_QUERY,
                 description='Số items trên một trang'
             ),
+            openapi.Parameter(
+                'nolimit', type=openapi.TYPE_BOOLEAN, in_=openapi.IN_QUERY,
+                description='Nolimit', default=False
+            ),
+            openapi.Parameter(
+                'search', type=openapi.TYPE_STRING, in_=openapi.IN_QUERY,
+                description='Search'
+            ),
+            openapi.Parameter(
+                'date_from', type=openapi.TYPE_STRING, format=openapi.FORMAT_DATE, in_=openapi.IN_QUERY,
+                description='Date from'
+            ),
+            openapi.Parameter(
+                'date_to', type=openapi.TYPE_STRING, format=openapi.FORMAT_DATE, in_=openapi.IN_QUERY,
+                description='Date to'
+            ),
+            openapi.Parameter(
+                'is_invited', type=openapi.TYPE_BOOLEAN, in_=openapi.IN_QUERY,
+                description='is_invited'
+            ),
+            openapi.Parameter(
+                'is_host', type=openapi.TYPE_BOOLEAN, in_=openapi.IN_QUERY,
+                description='is_host'
+            ),
+            openapi.Parameter(
+                'is_joined', type=openapi.TYPE_BOOLEAN, in_=openapi.IN_QUERY,
+                description='is_joined'
+            ),
+            openapi.Parameter(
+                'date_out', type=openapi.TYPE_BOOLEAN, in_=openapi.IN_QUERY,
+                description='date_out'
+            )
         ], paginator_inspectors=[PaginatorInspectorClass], tags=['event']
     )
     def list(self, request, *args, **kwargs):
         _serializer = self.get_serializer_class()
-        data, metadata = s_paginator(object_list=self.get_queryset(), request=request)
+        search = self.request.GET.get('search')
+        date_from = self.request.GET.get('date_from')
+        date_to = self.request.GET.get('date_to')
+        is_invited = self.request.GET.get('is_invited')
+        is_host = self.request.GET.get('is_host')
+        is_joined = self.request.GET.get('is_joined')
+        date_out = self.request.GET.get('date_out')
+        uid = '620cc37fd167266bacb9d24c'
+
+        _queryset = Event.objects.filter()
+        if search:
+            _queryset = _queryset.filter(name__icontains=search)
+        if date_from and date_to:
+            _queryset = _queryset.filter(Q(from_date__gte=date_from), Q(to_date__lte=date_to))
+        elif date_from:
+             _queryset = _queryset.filter(from_date__gte=date_from)
+        elif date_to:
+             _queryset = _queryset.filter(to_date__gte=date_to)
+        if is_invited:
+            _queryset = _queryset.filter(Q(eventparticipant__inviter_id__isnull=False), Q(eventparticipant__uid=uid))
+        print(_queryset.query)
+        _queryset = _queryset.order_by('-from_date')
+        data, metadata = s_paginator(object_list=_queryset, request=request)
         data_serializer = _serializer(data, many=True, context={'request': request}).data
         return JsonResponse(
             data={
@@ -175,6 +230,7 @@ class InviteEventAPI(APIView):
         }
     )
     def post(self, request, *args, **kwargs): 
+        print(request.data)
         try:
             event = Event.objects.get(id=request.data.get('event_id'))
         except Event.DoesNotExist:

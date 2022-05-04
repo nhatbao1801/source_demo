@@ -9,6 +9,7 @@ class Event(BaseModel):
     venue = models.CharField(max_length=300, blank=True, null=True, help_text='Tên địa điểm tổ chức sự kiện')
     tagline = models.CharField(max_length=100, blank=True, null=True, help_text='Tag giúp tìm kiếm event trong hinnox')
     description = models.TextField(blank=True, null=True, help_text='Mô tả về sự kiện')
+    short_description = models.TextField(blank=True, null=True, help_text='Mô tả ngắn về sự kiện')
     from_date = models.DateTimeField(blank=True, null=True, help_text='Ngày bắt đầu')
     to_date = models.DateTimeField(blank=True, null=True, help_text='Ngày kết thúc')
     users_interested_in = models.ManyToManyField(to='account.RefAccount', help_text='User quan tâm tới sự kiện', blank=True)

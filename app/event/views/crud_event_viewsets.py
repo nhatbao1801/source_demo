@@ -1,5 +1,5 @@
 import logging
-
+import json
 from django.http import JsonResponse
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
@@ -239,7 +239,9 @@ class InviteEventAPI(APIView):
         participants = []
         event_id = request.data.get('event_id')
         inviter_id = request.data.get('inviter_id')
-        for uid in request.data.get('uid'):
+        
+        uids = json.loads(request.data.get('uid'))
+        for uid in uids:
             ep = EventParticipant()
             ep.event_id = event_id
             ep.uid = uid

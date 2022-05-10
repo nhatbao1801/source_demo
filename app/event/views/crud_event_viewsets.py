@@ -81,7 +81,15 @@ class EventCRUDViewSet(
             openapi.Parameter(
                 'date_out', type=openapi.TYPE_BOOLEAN, in_=openapi.IN_QUERY,
                 description='date_out'
-            )
+            ),
+            openapi.Parameter(
+                'formality_id', type=openapi.TYPE_INTEGER, in_=openapi.IN_QUERY,
+                description='formality_id'
+            ),
+            openapi.Parameter(
+                'privacy_id', type=openapi.TYPE_INTEGER, in_=openapi.IN_QUERY,
+                description='privacy_id'
+            ),
         ], paginator_inspectors=[PaginatorInspectorClass], tags=['event']
     )
     def list(self, request, *args, **kwargs):
@@ -94,6 +102,8 @@ class EventCRUDViewSet(
         is_joined = self.request.GET.get('is_joined')
         date_out = self.request.GET.get('date_out')
         uid = self.request.GET.get('uid')
+        formality_id = self.request.GET.get('formality_id')
+        privacy_id = self.request.GET.get('privacy_id')
 
         _queryset = Event.objects.filter()
         if search:
@@ -113,6 +123,10 @@ class EventCRUDViewSet(
         if date_out:
             now = datetime.today().isoformat()
             _queryset = _queryset.filter(to_date__lt=now)
+        if formality_id:
+            _queryset = _queryset.filter(formality_id=formality_id)
+        if privacy_id:
+            _queryset = _queryset.filter(privacy_id=privacy_id)
         _queryset = _queryset.order_by('-from_date')
         data, metadata = s_paginator(object_list=_queryset, request=request)
         data_serializer = _serializer(data, many=True, context={'request': request}).data

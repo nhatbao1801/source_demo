@@ -235,8 +235,7 @@ class InviteEventAPI(APIView):
             )
         }
     )
-    def post(self, request, *args, **kwargs): 
-        print(request.data)
+    def post(self, request, *args, **kwargs):
         try:
             event = Event.objects.get(id=request.data.get('event_id'))
         except Event.DoesNotExist:
@@ -251,3 +250,32 @@ class InviteEventAPI(APIView):
         # Todo mời tham gia sự kiện
 
         return Response(data={"message": "Event invited successfully"}, status=status.HTTP_200_OK)
+
+class EventStatisticsAPI(APIView):
+    authentication_classes = []
+    permission_classes = [AllowAny]
+    @swagger_auto_schema(
+        operation_description='Thống kê sự kiện',
+        operation_summary='Thống kê sự kiện',
+        responses={
+            status.HTTP_200_OK: openapi.Response(
+                description='', examples={
+                    "data": openapi.Schema(
+                        type=openapi.TYPE_OBJECT,
+                        properties={
+                            "event_count": openapi.Schema(type=openapi.TYPE_INTEGER),
+                            "event_passed_count": openapi.Schema(type=openapi.TYPE_INTEGER),
+                            "event_member_count": openapi.Schema(type=openapi.TYPE_INTEGER)
+                        }
+                    )
+                }
+            )
+        }
+    )
+    def get(self, request, *args, **kwargs): 
+        _data = {
+            "event_count": 1000,
+            "event_passed_count": 1000,
+            "event_member_count": 1000
+        }
+        return Response(data={"data": _data}, status=status.HTTP_200_OK)

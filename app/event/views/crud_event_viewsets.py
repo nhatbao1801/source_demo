@@ -272,10 +272,18 @@ class EventStatisticsAPI(APIView):
             )
         }
     )
-    def get(self, request, *args, **kwargs): 
+    def get(self, request, *args, **kwargs):
+        events = Event.objects.all()
+        event_count = events.count()
+
+        now = datetime.today().isoformat()
+        passed_event = events.filter(to_date__lt=now)
+        event_passed_count = passed_event.count()
+
+        participants = EventParticipant.objects.count()
         _data = {
-            "event_count": 1000,
-            "event_passed_count": 500,
-            "event_member_count": 1000
+            "event_count": event_count,
+            "event_passed_count": event_passed_count,
+            "event_member_count": participants
         }
         return Response(data={"data": _data}, status=status.HTTP_200_OK)

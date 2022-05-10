@@ -275,7 +275,7 @@ class EventStatisticsAPI(APIView):
     def get(self, request, *args, **kwargs): 
         _data = {
             "event_count": 1000,
-            "event_passed_count": 1000,
+            "event_passed_count": 500,
             "event_member_count": 1000
         }
         return Response(data={"data": _data}, status=status.HTTP_200_OK)

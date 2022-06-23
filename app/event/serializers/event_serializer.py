@@ -1,6 +1,8 @@
+import requests
 from account.serializers.ref_account_serializer import RefAccountSerializerOut
 from drf_yasg.utils import swagger_serializer_method
 from account.models.account import RefAccount
+from utils.get_provider_alive.get_provider_alive import get_profile_detail
 from event.models.event_participant import EventParticipant
 from event.serializers.event_participant_serializer import EventParticipantOut
 from event.models.event import Event
@@ -29,7 +31,7 @@ class EventSerializerOut(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = ['id','is_owner', 'is_joined', 'owner_info', 'name', 'cover', 'venue', 'tagline', 'description', 'short_description', 'from_date', 'to_date', 'users_interested_in_info', 'privacy_info', 'co_host_info', 'formality_info', 'event_type_info', 'event_participant_info']
+        fields = ['id','is_owner', 'is_joined', 'owner_info', 'name', 'cover', 'venue', 'tagline', 'description', 'short_description', 'from_date', 'to_date', 'users_interested_in_info', 'privacy_info', 'co_host_info', 'formality_info', 'event_type_info', 'event_participant_info', 'business_level_code']
 
     def get_is_owner(self, instance):
         request = None
@@ -55,26 +57,37 @@ class EventSerializerOut(serializers.ModelSerializer):
     def get_ref_account_info(self, instance):
         if not instance.owner:
             return None
-        return RefAccountSerializerOut(instance=instance.owner).data
+        return get_profile_detail(uid=instance.owner)
     
     @swagger_serializer_method(serializer_or_field=RefAccountSerializerOut(many=True))
     def get_co_host_info(self, instance):
         if not instance.co_host:
             return []
-        return RefAccountSerializerOut(instance=instance.co_host, many=True).data
+
+        cohost=[]
+        for host in list(instance.co_host.filter().values_list('user_id', flat=True)):
+            cohost.append(get_profile_detail(uid=host))
+        return cohost
+        # return RefAccountSerializerOut(instance=instance.co_host, many=True).data
 
 
     @swagger_serializer_method(serializer_or_field=RefAccountSerializerOut(many=True))
     def get_users_interested_in_info(self, instance):
         if not instance.users_interested_in:
             return []
-        return RefAccountSerializerOut(instance=instance.users_interested_in, many=True).data
+        
+        users_interested=[]
+        for user in list(instance.users_interested_in.filter().values_list('user_id', flat=True)):
+            users_interested.append(get_profile_detail(uid=user))
+        return users_interested
+
 
     @swagger_serializer_method(serializer_or_field=PrivacySerializerOut)
     def get_privacy_info(self, instance):
         if not instance.privacy:
             return None
         return PrivacySerializerOut(instance=instance.privacy).data
+
 
     @swagger_serializer_method(serializer_or_field=FormalitySerializerOut)
     def get_formality_info(self, instance):
@@ -92,5 +105,8 @@ class EventSerializerOut(serializers.ModelSerializer):
     @swagger_serializer_method(serializer_or_field=RefAccountSerializerOut)
     def get_event_participant_info(self, instance):
         event_participant = list(EventParticipant.objects.filter(event_id=instance.id).values_list('uid', flat=True))
-        return RefAccountSerializerOut(instance=RefAccount.objects.filter(id__in=event_participant), many=True).data
+        participants = []
+        for participant in event_participant:
+            participants.append(get_profile_detail(uid=participant))
+        return participants
     

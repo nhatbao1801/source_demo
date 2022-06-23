@@ -17,6 +17,7 @@ class Event(BaseModel):
     co_host = models.ManyToManyField(to='account.RefAccount', blank=True, related_name="%(app_label)s_%(class)s_co_hosts")
     formality = models.ForeignKey(to='event.Formality', blank=True, on_delete=models.CASCADE, null=True)
     event_type = models.ForeignKey(to='event.EventType', blank=True, on_delete=models.CASCADE, null=True)
+    business_level_code = models.CharField(max_length=300, blank=True, null=True, help_text='Business Level Code')
     
 
     class Meta:

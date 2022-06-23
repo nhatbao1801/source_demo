@@ -1,6 +1,8 @@
 import logging
 from datetime import datetime
 from django.http import JsonResponse
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from event.models.event_participant import EventParticipant
@@ -92,6 +94,7 @@ class EventCRUDViewSet(
             ),
         ], paginator_inspectors=[PaginatorInspectorClass], tags=['event']
     )
+    @method_decorator(cache_page(3))
     def list(self, request, *args, **kwargs):
         _serializer = self.get_serializer_class()
         search = self.request.GET.get('search')

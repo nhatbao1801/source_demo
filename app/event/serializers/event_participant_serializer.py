@@ -1,5 +1,7 @@
+import requests
 from account.serializers.ref_account_serializer import RefAccountSerializerOut
 from drf_yasg.utils import swagger_serializer_method
+from utils.get_provider_alive.get_provider_alive import get_profile_detail
 from event.models.event_participant import EventParticipant
 from event.serializers.event_type_serializer import EventTypeSerializerOut
 from event.serializers.formality_serializer import FormalitySerializerOut
@@ -25,4 +27,5 @@ class EventParticipantOut(serializers.ModelSerializer):
     def get_uid_info(self, instance):
         if not instance.uid:
             return None
-        return RefAccountSerializerOut(instance=instance.uid).data
+        
+        return get_profile_detail(uid=instance.uid)

@@ -91,6 +91,9 @@ class EventCRUDViewSet(
             openapi.Parameter(
                 'privacy_id', type=openapi.TYPE_INTEGER, in_=openapi.IN_QUERY,
                 description='privacy_id'
+            ),openapi.Parameter(
+                'business_level_code', type=openapi.TYPE_STRING, in_=openapi.IN_QUERY,
+                description='business_level_code'
             ),
         ], paginator_inspectors=[PaginatorInspectorClass], tags=['event']
     )
@@ -107,6 +110,7 @@ class EventCRUDViewSet(
         uid = self.request.GET.get('uid')
         formality_id = self.request.GET.get('formality_id')
         privacy_id = self.request.GET.get('privacy_id')
+        business_level_code = self.request.GET.get('business_level_code')
 
         _queryset = Event.objects.filter()
         if search:
@@ -130,6 +134,8 @@ class EventCRUDViewSet(
             _queryset = _queryset.filter(formality_id=formality_id)
         if privacy_id:
             _queryset = _queryset.filter(privacy_id=privacy_id)
+        if business_level_code:
+            _queryset = _queryset.filter(business_level_code=business_level_code)
         _queryset = _queryset.order_by('-from_date')
         data, metadata = s_paginator(object_list=_queryset, request=request)
         data_serializer = _serializer(data, many=True, context={'request': request}).data

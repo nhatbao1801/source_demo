@@ -150,10 +150,11 @@ class EventCRUDViewSet(
         operation_summary='Tạo mới sự kiện', tags=['event']
     )
     def create(self, request, *args, **kwargs):
-        data = request.data
-        print(data)
         cohost = ","
-        data['co_host'] = cohost.join(data['co_host'])
+        data = request.data
+        if data.get('co_host'):
+            data = data.copy()
+            data['co_host'] = cohost.join(data['co_host'])
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 

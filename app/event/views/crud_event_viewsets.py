@@ -150,7 +150,15 @@ class EventCRUDViewSet(
         operation_summary='Tạo mới sự kiện', tags=['event']
     )
     def create(self, request, *args, **kwargs):
-        return super().create(request, *args, **kwargs)
+        data = request.data
+        cohost = ","
+        data['co_host'] = cohost.join(data['co_host'])
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
     
     @swagger_auto_schema(
         operation_summary='Chi tiết sự kiện', tags=['event']

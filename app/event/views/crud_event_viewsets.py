@@ -155,7 +155,7 @@ class EventCRUDViewSet(
         if data.get('co_host'):
             data = data.copy()
             data['co_host'] = cohost.join(data['co_host'])
-        serializer = self.get_serializer(data=request.data)
+        serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
 
         self.perform_create(serializer)

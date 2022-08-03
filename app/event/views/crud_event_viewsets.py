@@ -317,8 +317,8 @@ class ListInviteEventAPI(APIView):
     authentication_classes = []
     permission_classes = [AllowAny]
     @swagger_auto_schema(
-        operation_description='Thống kê sự kiện',
-        operation_summary='Thống kê sự kiện',
+        operation_description='Danh sách lời mời tham gia',
+        operation_summary='Danh sách lời mời tham gia',
         responses={
             status.HTTP_200_OK: openapi.Response(
                 description='', examples={

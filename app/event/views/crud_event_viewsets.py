@@ -242,7 +242,7 @@ class InviteEventAPI(APIView):
             type=openapi.TYPE_OBJECT,
             properties={
                 "event_id": openapi.Schema(type=openapi.TYPE_INTEGER),
-                "uid": openapi.Schema(type=openapi.TYPE_STRING, items=openapi.Schema(type=openapi.TYPE_STRING)),
+                "uid": openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_STRING)),
                 "inviter_id": openapi.Schema(type=openapi.TYPE_STRING),
             }
         ),

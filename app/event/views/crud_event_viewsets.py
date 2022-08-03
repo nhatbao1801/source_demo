@@ -124,7 +124,7 @@ class EventCRUDViewSet(
         if is_invited:
             _queryset = _queryset.filter(Q(eventparticipant__inviter_id__isnull=False), Q(eventparticipant__uid=uid))
         if is_host:
-            _queryset = _queryset.filter(owner_id=uid)
+            _queryset = _queryset.filter(owner=uid)
         if is_joined:
             _queryset = _queryset.filter(Q(eventparticipant__uid=uid))
         if date_out:

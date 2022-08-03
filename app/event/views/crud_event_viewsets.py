@@ -5,6 +5,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
+from event.serializers.event_participant_serializer import EventListInviteSchema
 from event.models.event_participant import EventParticipant
 from event.models.event import Event
 from event.serializers.event_serializer import (EventSerializer,
@@ -334,7 +335,7 @@ class ListInviteEventAPI(APIView):
     def get(self, request, *args, **kwargs):
         uid = request.data.get('uid')
         list_invite_join = EventParticipant.objects.filter(uid=uid, stage='INVITED')
-        _serializer = self.get_serializer_class()
+        _serializer = EventListInviteSchema
         data, metadata = s_paginator(object_list=list_invite_join, request=request)
         data_serializer = _serializer(data, many=True, context={'request': request}).data
         return JsonResponse(

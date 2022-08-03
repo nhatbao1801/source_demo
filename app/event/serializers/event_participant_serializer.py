@@ -31,6 +31,13 @@ class EventParticipantOut(serializers.ModelSerializer):
         
         return get_profile_detail(uid=instance.uid)
 
+
+class EventSerializerOutShort(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+        fields = ['id', 'name', 'cover', 'venue', 'tagline', 'description', 'short_description', 'from_date', 'to_date']
+
+
 class EventListInviteSchema(serializers.ModelSerializer):
     uid_info = serializers.SerializerMethodField('get_uid_info')
 
@@ -45,15 +52,9 @@ class EventListInviteSchema(serializers.ModelSerializer):
             return None
         return get_profile_detail(uid=instance.uid)
 
-
     
-class EventSerializerOutShort(serializers.ModelSerializer):
-    class Meta:
-        model = Event
-        fields = ['id', 'name', 'cover', 'venue', 'tagline', 'description', 'short_description', 'from_date', 'to_date']
-
-@swagger_serializer_method(serializer_or_field=EventSerializerOutShort)
-def get_event_info(self, instance):
-    if not instance.event_id:
-        return None
-    return EventSerializerOutShort(uid=instance.event_id).data
+    @swagger_serializer_method(serializer_or_field=EventSerializerOutShort)
+    def get_event_info(self, instance):
+        if not instance.event_id:
+            return None
+        return EventSerializerOutShort(uid=instance.event_id).data

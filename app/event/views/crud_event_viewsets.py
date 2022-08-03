@@ -333,8 +333,9 @@ class ListInviteEventAPI(APIView):
         }
     )
     def get(self, request, *args, **kwargs):
-        uid = request.data.get('uid')
+        uid = request.query_params.get('uid')
         list_invite_join = EventParticipant.objects.filter(uid=uid, stage='INVITED')
+        print(uid)
         _serializer = EventListInviteSchema
         data, metadata = s_paginator(object_list=list_invite_join, request=request)
         data_serializer = _serializer(data, many=True, context={'request': request}).data

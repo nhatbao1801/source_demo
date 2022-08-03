@@ -60,13 +60,10 @@ class EventParticipantCRUDViewSet(
         ], paginator_inspectors=[PaginatorInspectorClass], tags=['event-participant']
     )
     def list(self, request, *args, **kwargs):
-        _serializer = EventParcitipantSerializerInfo
         _queryset = list(EventParticipant.objects.filter(is_deleted=False, event_id=request.GET.get('event_id')).values_list('uid', flat=True))
-        _participants = RefAccount.objects.filter(id__in=_queryset)
         data, metadata = s_paginator(object_list=_queryset, request=request, not_queryset=True)
         data_serializer = []
         for i in data:
-            print(i)
             profile = get_profile_detail(uid=i)
             data_serializer.append(profile)
         # data_serializer = _serializer(data, many=True, context={'request': request}).data

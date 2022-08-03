@@ -218,13 +218,13 @@ class JoinEventAPI(APIView):
         except Event.DoesNotExist:
             return Response(data={"Missing param event_id"}, status=status.HTTP_400_BAD_REQUEST)
 
-        is_joined = EventParticipant.objects.filter(uid_id=request.data.get('uid'), event_id=request.data.get('event_id'), stage='JOINED')
+        is_joined = EventParticipant.objects.filter(uid=request.data.get('uid'), event_id=request.data.get('event_id'), stage='JOINED')
         if is_joined.count() > 0:
             return Response(data={"You has joined this event"}, status=status.HTTP_400_BAD_REQUEST)
             
         event_participant = EventParticipant()
         event_participant.event_id = request.data.get('event_id')
-        event_participant.uid_id = request.data.get('uid')
+        event_participant.uid = request.data.get('uid')
         event_participant.stage = 'JOINED'
         event_participant.save()
 
@@ -267,7 +267,7 @@ class InviteEventAPI(APIView):
         participants = []
         event_id = request.data.get('event_id')
         for uid in request.data.get('uid'):
-            participants.append(EventParticipant(event_id=event_id, uid_id=uid, inviter_id_id=request.data.get('inviter_id'), stage='INVITED'))
+            participants.append(EventParticipant(event_id=event_id, uid=uid, inviter_id_id=request.data.get('inviter_id'), stage='INVITED'))
         EventParticipant.objects.bulk_create(participants)
 
         # Todo mời tham gia sự kiện

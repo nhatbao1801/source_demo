@@ -5,7 +5,8 @@ from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from account.serializers.ref_account_serializer import EventParcitipantSerializerInfo
 from account.models.account import RefAccount
-from event.serializers.event_participant_serializer import EventListInviteSchema, EventParticipantOut, EventParticipantSerializer
+from utils.get_provider_alive.get_provider_alive import get_profile_detail
+from event.serializers.event_participant_serializer import EventParticipantOut, EventParticipantSerializer
 from event.models.event_participant import EventParticipant
 from event.models.event import Event
 from event.serializers.event_serializer import (EventSerializer,
@@ -59,11 +60,16 @@ class EventParticipantCRUDViewSet(
         ], paginator_inspectors=[PaginatorInspectorClass], tags=['event-participant']
     )
     def list(self, request, *args, **kwargs):
-        _serializer = EventListInviteSchema
+        _serializer = EventParcitipantSerializerInfo
         _queryset = list(EventParticipant.objects.filter(is_deleted=False, event_id=request.GET.get('event_id')).values_list('uid', flat=True))
         _participants = RefAccount.objects.filter(id__in=_queryset)
-        data, metadata = s_paginator(object_list=_participants, request=request)
-        data_serializer = _serializer(data, many=True, context={'request': request}).data
+        data, metadata = s_paginator(object_list=_queryset, request=request, not_queryset=True)
+        data_serializer = []
+        for i in data:
+            print(i)
+            profile = get_profile_detail(uid=i)
+            data_serializer.append(profile)
+        # data_serializer = _serializer(data, many=True, context={'request': request}).data
         return JsonResponse(
             data={
                 'data': data_serializer,

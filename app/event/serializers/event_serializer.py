@@ -110,3 +110,7 @@ class EventSerializerOut(serializers.ModelSerializer):
             participants.append(get_profile_detail(uid=participant))
         return participants
     
+class EventSerializerOutShort(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+        fields = ['id', 'name', 'cover', 'venue', 'tagline', 'description', 'short_description', 'from_date', 'to_date']

@@ -310,3 +310,36 @@ class EventStatisticsAPI(APIView):
             "event_member_count": participants
         }
         return Response(data={"data": _data}, status=status.HTTP_200_OK)
+
+
+class ListInviteEventAPI(APIView):
+    authentication_classes = []
+    permission_classes = [AllowAny]
+    @swagger_auto_schema(
+        operation_description='Thống kê sự kiện',
+        operation_summary='Thống kê sự kiện',
+        responses={
+            status.HTTP_200_OK: openapi.Response(
+                description='', examples={
+                    "data": openapi.Schema(
+                        type=openapi.TYPE_OBJECT,
+                        properties={
+                            "test": openapi.Schema(type=openapi.TYPE_STRING)
+                        }
+                    )
+                }
+            )
+        }
+    )
+    def get(self, request, *args, **kwargs):
+        uid = request.data.get('uid')
+        list_invite_join = EventParticipant.objects.filter(uid=uid, stage='INVITED')
+        _serializer = self.get_serializer_class()
+        data, metadata = s_paginator(object_list=list_invite_join, request=request)
+        data_serializer = _serializer(data, many=True, context={'request': request}).data
+        return JsonResponse(
+            data={
+                'data': data_serializer,
+                'metadata': metadata
+            }, status=status.HTTP_200_OK
+        )

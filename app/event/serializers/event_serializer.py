@@ -65,7 +65,7 @@ class EventSerializerOut(serializers.ModelSerializer):
             return []
 
         cohost=[]
-        for host in list(instance.co_host.filter().values_list('user_id', flat=True)):
+        for host in instance.co_host.split(','):
             cohost.append(get_profile_detail(uid=host))
         return cohost
         # return RefAccountSerializerOut(instance=instance.co_host, many=True).data
@@ -77,7 +77,7 @@ class EventSerializerOut(serializers.ModelSerializer):
             return []
         
         users_interested=[]
-        for user in list(instance.users_interested_in.filter().values_list('user_id', flat=True)):
+        for user in instance.users_interested_in.split(","):
             users_interested.append(get_profile_detail(uid=user))
         return users_interested
 

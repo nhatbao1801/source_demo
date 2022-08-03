@@ -152,6 +152,7 @@ class EventCRUDViewSet(
     def create(self, request, *args, **kwargs):
         cohost = ","
         data = request.data
+        print(data)
         if data.get('co_host'):
             data = data.copy()
             data['co_host'] = cohost.join(data['co_host'])

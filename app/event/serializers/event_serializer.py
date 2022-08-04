@@ -40,7 +40,7 @@ class EventSerializerOut(serializers.ModelSerializer):
         now = datetime.today().timestamp()
         # format = "%Y-%m-%d %H:%M:%S"
         # inst_to_day = datetime.strptime(str(inst.to_date), format)
-        return inst.to_date.timestamp() > now
+        return inst.to_date.timestamp() < now
 
     def get_business_level_code(self, instance):
         blcode = None

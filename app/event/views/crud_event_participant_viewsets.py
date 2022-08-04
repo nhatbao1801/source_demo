@@ -76,7 +76,7 @@ class EventParticipantCRUDViewSet(
 
 
     @swagger_auto_schema(
-        operation_summary='Xóa participant', tags=['event']
+        operation_summary='Xóa participant', tags=['event-participant']
     )
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()

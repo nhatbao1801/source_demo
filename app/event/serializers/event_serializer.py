@@ -1,5 +1,5 @@
 import requests
-from datetime import datetime
+
 from account.serializers.ref_account_serializer import RefAccountSerializerOut
 from drf_yasg.utils import swagger_serializer_method
 from account.models.account import RefAccount
@@ -37,6 +37,7 @@ class EventSerializerOut(serializers.ModelSerializer):
         fields = ['id','is_owner', 'is_joined', 'owner_info', 'name', 'cover', 'venue', 'tagline', 'description', 'short_description', 'from_date', 'to_date', 'users_interested_in_info', 'privacy_info', 'co_host_info', 'formality_info', 'event_type_info', 'event_participant_info', 'business_level_code', 'out_date']
 
     def check_date_out(self, inst):
+        from datetime import datetime
         now = datetime.today().isoformat()
         import datetime
         inst_to_day = datetime.datetime.strptime(inst.to_date, format)

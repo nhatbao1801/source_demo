@@ -37,10 +37,10 @@ class EventSerializerOut(serializers.ModelSerializer):
         fields = ['id','is_owner', 'is_joined', 'owner_info', 'name', 'cover', 'venue', 'tagline', 'description', 'short_description', 'from_date', 'to_date', 'users_interested_in_info', 'privacy_info', 'co_host_info', 'formality_info', 'event_type_info', 'event_participant_info', 'business_level_code', 'out_date']
 
     def check_date_out(self, inst):
-        now = datetime.today()
+        now = datetime.today().timestamp()
         # format = "%Y-%m-%d %H:%M:%S"
         # inst_to_day = datetime.strptime(str(inst.to_date), format)
-        return inst.to_date > now
+        return inst.to_date.timestamp() > now
 
     def get_business_level_code(self, instance):
         blcode = None

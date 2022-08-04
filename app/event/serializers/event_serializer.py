@@ -38,7 +38,8 @@ class EventSerializerOut(serializers.ModelSerializer):
 
     def check_date_out(self, inst):
         now = datetime.today().isoformat()
-        return inst.to_date > now
+        inst_to_day = datetime.strptime(inst.to_date, format)
+        return inst_to_day > now
 
     def get_business_level_code(self, instance):
         blcode = None

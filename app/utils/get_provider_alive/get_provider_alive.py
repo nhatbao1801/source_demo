@@ -72,3 +72,11 @@ def get_profile_detail(uid:str):
     _url = get_profile_provider()
     profile_info = requests.get(f"{_url}/profile/{uid}").json()
     return profile_info.get('data')
+
+def get_business_level_code_detail(bl_code:str):
+    _url = get_profile_detail()
+    try:
+        business_level_info = requests.get(f"{_url}/business_level_detail?business_level_id={bl_code}")
+        return business_level_info.get('data').get('bl_code')
+    except Exception as e:
+        raise Exception(e)

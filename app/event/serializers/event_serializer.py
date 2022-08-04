@@ -2,7 +2,7 @@ import requests
 from account.serializers.ref_account_serializer import RefAccountSerializerOut
 from drf_yasg.utils import swagger_serializer_method
 from account.models.account import RefAccount
-from utils.get_provider_alive.get_provider_alive import get_profile_detail
+from utils.get_provider_alive.get_provider_alive import get_profile_detail, get_business_level_code_detail
 from event.models.event_participant import EventParticipant
 from event.serializers.event_participant_serializer import EventParticipantOut
 from event.models.event import Event
@@ -28,11 +28,18 @@ class EventSerializerOut(serializers.ModelSerializer):
     event_participant_info = serializers.SerializerMethodField('get_event_participant_info')
     is_owner = serializers.SerializerMethodField('get_is_owner')
     is_joined = serializers.SerializerMethodField('get_is_joined')
+    business_level_code = serializers.SerializerMethodField('get_business_level_code')
 
     class Meta:
         model = Event
         fields = ['id','is_owner', 'is_joined', 'owner_info', 'name', 'cover', 'venue', 'tagline', 'description', 'short_description', 'from_date', 'to_date', 'users_interested_in_info', 'privacy_info', 'co_host_info', 'formality_info', 'event_type_info', 'event_participant_info', 'business_level_code']
 
+    def get_business_level_code(self, instance):
+        blcode = None
+        if not instance.business_level_code:
+            return blcode
+        return get_business_level_code_detail(bl_code=instance.business_level_code)
+        
     def get_is_owner(self, instance):
         request = None
         if self.context.get('request'):

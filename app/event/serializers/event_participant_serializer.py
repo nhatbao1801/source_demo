@@ -39,7 +39,7 @@ class EventSerializerOutShort(serializers.ModelSerializer):
 
 
 class EventListInviteSchema(serializers.ModelSerializer):
-    uid_info = serializers.SerializerMethodField('get_uid_info')
+    uid_info = serializers.SerializerMethodField('get_inviter_id_info')
     event_info = serializers.SerializerMethodField('get_event_info')
 
     class Meta:
@@ -48,10 +48,10 @@ class EventListInviteSchema(serializers.ModelSerializer):
 
 
     @swagger_serializer_method(serializer_or_field=RefAccountSerializerOut)
-    def get_uid_info(self, instance):
-        if not instance.uid:
+    def get_inviter_id_info(self, instance):
+        if not instance.inviter_id:
             return None
-        return get_profile_detail(uid=instance.uid)
+        return get_profile_detail(uid=instance.inviter_id)
 
     
     @swagger_serializer_method(serializer_or_field=EventSerializerOutShort)

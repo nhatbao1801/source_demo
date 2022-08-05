@@ -39,12 +39,12 @@ class EventSerializerOutShort(serializers.ModelSerializer):
 
 
 class EventListInviteSchema(serializers.ModelSerializer):
-    uid_info = serializers.SerializerMethodField('get_inviter_id_info')
+    inviter_id_info = serializers.SerializerMethodField('get_inviter_id_info')
     event_info = serializers.SerializerMethodField('get_event_info')
 
     class Meta:
         model = EventParticipant
-        fields = ['uid_info', 'event_info', 'created_at']
+        fields = ['inviter_id_info', 'event_info', 'created_at']
 
 
     @swagger_serializer_method(serializer_or_field=RefAccountSerializerOut)

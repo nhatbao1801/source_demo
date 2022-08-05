@@ -3,7 +3,7 @@ from datetime import datetime
 from account.serializers.ref_account_serializer import RefAccountSerializerOut
 from drf_yasg.utils import swagger_serializer_method
 from account.models.account import RefAccount
-from utils.get_provider_alive.get_provider_alive import get_profile_detail, get_business_level_code_detail
+from utils.get_provider_alive.get_provider_alive import get_profile_detail, get_business_level_code_detail, check_user_submited_form
 from event.models.event_participant import EventParticipant
 from event.serializers.event_participant_serializer import EventParticipantOut
 from event.models.event import Event
@@ -31,10 +31,20 @@ class EventSerializerOut(serializers.ModelSerializer):
     is_joined = serializers.SerializerMethodField('get_is_joined')
     business_level_code = serializers.SerializerMethodField('get_business_level_code')
     out_date = serializers.SerializerMethodField('check_date_out')
+    is_form_submited = serializers.SerializerMethodField('check_form_submited')
 
     class Meta:
         model = Event
         fields = ['id','is_owner', 'is_joined', 'owner_info', 'name', 'cover', 'venue', 'tagline', 'description', 'short_description', 'from_date', 'to_date', 'users_interested_in_info', 'privacy_info', 'co_host_info', 'formality_info', 'event_type_info', 'event_participant_info', 'business_level_code', 'link_online', 'out_date']
+
+
+    def check_form_submited(self, inst):
+        request = None
+        if self.context.get('request'):
+            request = self.context.get('request')
+            uid = request.GET.get('uid')
+        if inst.owner != uid:
+            return check_user_submited_form(target_id=inst.id, uid=uid)
 
     def check_date_out(self, inst):
         now = datetime.today().timestamp()

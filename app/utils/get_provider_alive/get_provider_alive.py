@@ -60,6 +60,8 @@ def get_service_from_registry_service(service_name=None):
 def get_profile_provider():
     return get_service_from_registry_service(service_name="profile_service")
 
+def get_form_provider():
+    return get_service_from_registry_service(service_name="form_service")
 
 def get_profile_list():
     _url = get_profile_provider()
@@ -80,3 +82,12 @@ def get_business_level_code_detail(bl_code:str):
         return business_level_info.get('data').get('bl_code')
     except Exception as e:
         raise Exception(e)
+
+def check_user_submited_form(target_id:str, uid:str):
+    _url = get_form_provider()
+    try:
+        is_submited = requests.get(f"{_url}/form-submit-detail?target_id={target_id}&user_id={uid}&check_exists=True").json()
+        return is_submited.get('data').get('bl_code')
+    except Exception as e:
+        print("ERROR: ", e.__str__())
+        return False

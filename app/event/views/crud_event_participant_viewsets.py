@@ -80,8 +80,8 @@ class EventParticipantCRUDViewSet(
     )
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
-        instance.is_deleted = True
-        instance.save()
+        # instance.is_deleted = True
+        instance.delete()
         return JsonResponse(
             data={
                 'status': 'HTTP_200_OK',

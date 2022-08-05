@@ -91,3 +91,14 @@ def check_user_submited_form(target_id:str, uid:str):
     except Exception as e:
         print("ERROR: ", e.__str__())
         return False
+
+
+def get_rating_avg_form(target_id:str):
+    _url = get_form_provider()
+    try:
+        is_submited = requests.get(f"{_url}/target-evaluation?target_id={target_id}").json()
+        if is_submited and is_submited.get('data'):
+            return is_submited.get('data').get('rating')
+    except Exception as e:
+        print("ERROR: ", e.__str__())
+        return False

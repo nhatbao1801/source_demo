@@ -87,7 +87,7 @@ def check_user_submited_form(target_id:str, uid:str):
     _url = get_form_provider()
     try:
         is_submited = requests.get(f"{_url}/form-submit-detail?target_id={target_id}&user_id={uid}&check_exists=True").json()
-        return is_submited.get('data').get('bl_code')
+        return is_submited.get('data')
     except Exception as e:
         print("ERROR: ", e.__str__())
         return False

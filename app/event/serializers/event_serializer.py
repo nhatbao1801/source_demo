@@ -74,6 +74,8 @@ class EventSerializerOut(serializers.ModelSerializer):
             request = self.context.get('request')
             uid = request.GET.get('uid')
             participants = list(EventParticipant.objects.filter(event_id=instance.id).values_list('uid', flat=True))
+            if participants:
+                participants = participants.split(',')
         if uid in participants:
             return True
         return False

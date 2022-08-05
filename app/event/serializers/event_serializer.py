@@ -73,6 +73,7 @@ class EventSerializerOut(serializers.ModelSerializer):
     def get_is_joined(self, instance):
         request = None
         participants = []
+        print(self.context.get('request'))
         if self.context.get('request'):
             request = self.context.get('request')
             uid = request.GET.get('uid')

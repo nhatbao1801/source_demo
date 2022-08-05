@@ -18,6 +18,7 @@ class Event(BaseModel):
     formality = models.ForeignKey(to='event.Formality', blank=True, on_delete=models.CASCADE, null=True)
     event_type = models.ForeignKey(to='event.EventType', blank=True, on_delete=models.CASCADE, null=True)
     business_level_code = models.CharField(max_length=300, blank=True, null=True, help_text='Business Level Code')
+    link_online = models.CharField(max_length=300, blank=True, null=True, help_text='Link online')
     
 
     class Meta:

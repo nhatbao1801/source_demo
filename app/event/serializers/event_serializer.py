@@ -81,7 +81,8 @@ class EventSerializerOut(serializers.ModelSerializer):
 
         cohost=[]
         for host in instance.co_host.split(','):
-            cohost.append(get_profile_detail(uid=host))
+            if host:
+                cohost.append(get_profile_detail(uid=host))
         return cohost
         # return RefAccountSerializerOut(instance=instance.co_host, many=True).data
 

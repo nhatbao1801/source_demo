@@ -32,11 +32,14 @@ class EventSerializerOut(serializers.ModelSerializer):
     business_level_code = serializers.SerializerMethodField('get_business_level_code')
     out_date = serializers.SerializerMethodField('check_date_out')
     is_form_submited = serializers.SerializerMethodField('check_form_submited')
+    event_participant_count = serializers.SerializerMethodField('count_event_participant_count')
 
     class Meta:
         model = Event
-        fields = ['id','is_owner', 'is_joined', 'owner_info', 'name', 'cover', 'venue', 'tagline', 'description', 'short_description', 'from_date', 'to_date', 'users_interested_in_info', 'privacy_info', 'co_host_info', 'formality_info', 'event_type_info', 'event_participant_info', 'business_level_code', 'link_online', 'is_form_submited', 'out_date']
+        fields = ['id','is_owner', 'is_joined', 'owner_info', 'name', 'cover', 'venue', 'tagline', 'description', 'short_description', 'from_date', 'to_date', 'users_interested_in_info', 'privacy_info', 'co_host_info', 'formality_info', 'event_type_info', 'event_participant_info', 'business_level_code', 'link_online', 'is_form_submited', 'event_participant_count', 'out_date']
 
+    def count_event_participant_count(self, inst):
+        return EventParticipant.objects.filter(event_id=inst.id).count()
 
     def check_form_submited(self, inst):
         request = None
@@ -75,8 +78,6 @@ class EventSerializerOut(serializers.ModelSerializer):
             uid = request.GET.get('uid')
             participants = list(EventParticipant.objects.filter(event_id=instance.id).values_list('uid', flat=True))
             print(participants)
-            if participants:
-                participants = participants.split(',')
         if uid in participants:
             return True
         return False

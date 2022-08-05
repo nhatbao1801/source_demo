@@ -226,7 +226,8 @@ class JoinEventAPI(APIView):
         if is_joined.count() > 0:
             return Response(data={"You has joined this event"}, status=status.HTTP_400_BAD_REQUEST)
         
-        EventParticipant.objects.filter(uid=request.data.get('uid'), event_id=request.data.get('event_id')).update(stage='JOINED')
+        # EventParticipant.objects.filter(uid=request.data.get('uid'), event_id=request.data.get('event_id')).update(stage='JOINED')
+        EventParticipant.objects.update_or_create(uid=request.data.get('uid'), event_id=request.data.get('event_id'), defaults={"stage": "JOINED"})
         # event_participant = EventParticipant()
         # event_participant.event_id = request.data.get('event_id')
         # event_participant.uid = request.data.get('uid')

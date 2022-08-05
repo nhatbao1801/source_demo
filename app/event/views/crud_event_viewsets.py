@@ -157,7 +157,10 @@ class EventCRUDViewSet(
         operation_summary='Chi tiết sự kiện', tags=['event']
     )
     def retrieve(self, request, *args, **kwargs):
-        return super().retrieve(request, *args, **kwargs)
+        instance = self.get_object()
+        serializer = self.get_serializer_class()
+        _serializer = serializer(instance, many=False, context={'request': request})
+        return Response(_serializer.data)
 
     
     @swagger_auto_schema(
@@ -333,7 +336,6 @@ class ListInviteEventAPI(APIView):
     def get(self, request, *args, **kwargs):
         uid = request.query_params.get('uid')
         list_invite_join = EventParticipant.objects.filter(uid=uid, stage='INVITED')
-        print(uid)
         _serializer = EventListInviteSchema
         data, metadata = s_paginator(object_list=list_invite_join, request=request)
         data_serializer = _serializer(data, many=True, context={'request': request}).data

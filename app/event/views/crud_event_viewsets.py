@@ -273,7 +273,10 @@ class InviteEventAPI(APIView):
         participants = []
         event_id = request.data.get('event_id')
         for uid in request.data.get('uid'):
-            participants.append(EventParticipant(event_id=event_id, uid=uid, inviter_id=request.data.get('inviter_id'), stage='INVITED'))
+            if EventParticipant.objects.filter(event_id=event_id, uid=uid, inviter_id=request.data.get('inviter_id')).count() <= 0:
+                participants.append(EventParticipant(event_id=event_id, uid=uid, inviter_id=request.data.get('inviter_id'), stage='INVITED'))
+        if len(participants) <= 0:
+            return Response(data={"message": "Uids đã được mời vào rồi"}, status=status.HTTP_400_BAD_REQUEST)
         EventParticipant.objects.bulk_create(participants)
         return Response(data={"message": "Event invited successfully"}, status=status.HTTP_200_OK)
 

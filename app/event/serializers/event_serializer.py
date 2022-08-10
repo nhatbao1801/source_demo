@@ -43,7 +43,7 @@ class EventSerializerOut(serializers.ModelSerializer):
         return get_rating_avg_form(target_id=inst.id)
 
     def count_event_participant_count(self, inst):
-        return EventParticipant.objects.filter(event_id=inst.id).count()
+        return EventParticipant.objects.filter(event_id=inst.id, stage="JOINED").count()
 
     def check_form_submited(self, inst):
         request = None
@@ -137,7 +137,7 @@ class EventSerializerOut(serializers.ModelSerializer):
 
     @swagger_serializer_method(serializer_or_field=RefAccountSerializerOut)
     def get_event_participant_info(self, instance):
-        event_participant = list(EventParticipant.objects.filter(event_id=instance.id).values_list('uid', flat=True))
+        event_participant = list(EventParticipant.objects.filter(event_id=instance.id, stage="JOINED").values_list('uid', flat=True))
         participants = []
         for participant in event_participant:
             participants.append(get_profile_detail(uid=participant))

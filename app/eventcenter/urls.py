@@ -44,6 +44,8 @@ def home(request):
     ]
     return JsonResponse({"welcome": "Welcome to eventcenter.api.hspace.biz \n CI Deploy", "ref_links": ref_links})
 
+def health(request):
+    return JsonResponse({"status":"healthy"})
 
 urlpatterns = [
     path('', home),

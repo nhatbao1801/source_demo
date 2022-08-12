@@ -14,7 +14,7 @@ def register_to_registry_service():
         "Address": configuration.address,
         'Port': int(configuration.port),
         "Check": {
-            "http": f"http://{configuration.address}:{configuration.port}/common/health",
+            "http": f"http://{configuration.address}:{configuration.port}/health",
             "interval": "10s"
         }
     }

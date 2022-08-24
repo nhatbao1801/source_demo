@@ -114,6 +114,8 @@ class EventCRUDViewSet(
         business_level_code = self.request.GET.get('business_level_code')
 
         _queryset = Event.objects.filter()
+        if not is_host:
+            _queryset = _queryset.filter(~Q(code="PRIVATE"))
         if search:
             _queryset = _queryset.filter(name__icontains=search)
         if date_from and date_to:

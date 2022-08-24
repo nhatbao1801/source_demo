@@ -99,7 +99,9 @@ class EventSerializerOut(serializers.ModelSerializer):
         cohost=[]
         for host in instance.co_host.split(','):
             if host:
-                cohost.append(get_profile_detail(uid=host))
+                profile = get_profile_detail(uid=host)
+                if profile:
+                    cohost.append(profile)
         return cohost
         # return RefAccountSerializerOut(instance=instance.co_host, many=True).data
 
@@ -111,7 +113,9 @@ class EventSerializerOut(serializers.ModelSerializer):
         
         users_interested=[]
         for user in instance.users_interested_in.split(","):
-            users_interested.append(get_profile_detail(uid=user))
+            profile = get_profile_detail(uid=user)
+            if profile:
+                users_interested.append(profile)
         return users_interested
 
 
@@ -140,5 +144,7 @@ class EventSerializerOut(serializers.ModelSerializer):
         event_participant = list(EventParticipant.objects.filter(event_id=instance.id, stage="JOINED").values_list('uid', flat=True))
         participants = []
         for participant in event_participant:
-            participants.append(get_profile_detail(uid=participant))
+            profile = get_profile_detail(uid=participant)
+            if profile:
+                participants.append(profile)
         return participants

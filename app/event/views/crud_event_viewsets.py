@@ -115,7 +115,7 @@ class EventCRUDViewSet(
 
         _queryset = Event.objects.filter()
         if not is_host:
-            _queryset = _queryset.filter(~Q(code="PRIVATE"))
+            _queryset = _queryset.filter(~Q(privacy__code="PRIVATE"))
         if search:
             _queryset = _queryset.filter(name__icontains=search)
         if date_from and date_to:

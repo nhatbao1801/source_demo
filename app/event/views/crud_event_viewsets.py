@@ -114,6 +114,8 @@ class EventCRUDViewSet(
         business_level_code = self.request.GET.get('business_level_code')
 
         _queryset = Event.objects.filter()
+        if not is_host:
+            _queryset = _queryset.filter(~Q(privacy__code="PRIVATE"))
         if search:
             _queryset = _queryset.filter(name__icontains=search)
         if date_from and date_to:
@@ -127,7 +129,7 @@ class EventCRUDViewSet(
         if is_host:
             _queryset = _queryset.filter(owner=uid)
         if is_joined:
-            _queryset = _queryset.filter(Q(eventparticipant__uid=uid))
+            _queryset = _queryset.filter(Q(eventparticipant__uid=uid), Q(stage="JOINED"))
         if date_out:
             now = datetime.today().isoformat()
             _queryset = _queryset.filter(to_date__lt=now)
@@ -267,6 +269,8 @@ class InviteEventAPI(APIView):
     def post(self, request, *args, **kwargs):
         try:
             event = Event.objects.get(id=request.data.get('event_id'))
+            if request.data.get('uid') == event.owner:
+                return Response(data={"message": "Không thể mời owner của event này"}, status=status.HTTP_400_BAD_REQUEST)
         except Event.DoesNotExist:
             return Response(data={"Missing param event_id"}, status=status.HTTP_400_BAD_REQUEST)
 

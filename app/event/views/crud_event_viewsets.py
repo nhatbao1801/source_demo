@@ -34,7 +34,7 @@ class EventCRUDViewSet(
     authentication_classes = []
     permission_classes = [AllowAny]
     serializer_class = EventSerializer
-    queryset = Event.objects.all().order_by('-from_date')
+    queryset = Event.objects.all().order_by('from_date')
     pagination_class = pagination.PageNumberPagination
 
     def get_serializer_class(self):
@@ -143,7 +143,7 @@ class EventCRUDViewSet(
             _queryset = _queryset.filter(privacy_id=privacy_id)
         if business_level_code:
             _queryset = _queryset.filter(business_level_code=business_level_code)
-        _queryset = _queryset.order_by('-from_date')
+        _queryset = _queryset.order_by('from_date')
         data, metadata = s_paginator(object_list=_queryset, request=request)
         data_serializer = _serializer(data, many=True, context={'request': request}).data
         return JsonResponse(

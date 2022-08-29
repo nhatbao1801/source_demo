@@ -130,9 +130,13 @@ class EventCRUDViewSet(
             _queryset = _queryset.filter(owner=uid)
         if is_joined:
             _queryset = _queryset.filter(Q(eventparticipant__uid=uid), Q(eventparticipant__stage="JOINED"))
+
         if date_out:
             now = datetime.today().isoformat()
             _queryset = _queryset.filter(to_date__lt=now)
+        else:
+            now = datetime.today().isoformat()
+            _queryset = _queryset.filter(to_date__gte=now)
         if formality_id:
             _queryset = _queryset.filter(formality_id=formality_id)
         if privacy_id:

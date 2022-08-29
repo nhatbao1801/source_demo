@@ -137,7 +137,7 @@ class EventCRUDViewSet(
         else:
             now = datetime.today().isoformat()
             _queryset = _queryset.filter(to_date__gte=now)
-            _queryset = _queryset.order_by('-to_date')
+            _queryset = _queryset.order_by('to_date')
         if formality_id:
             _queryset = _queryset.filter(formality_id=formality_id)
         if privacy_id:

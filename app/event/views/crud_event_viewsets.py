@@ -34,7 +34,7 @@ class EventCRUDViewSet(
     authentication_classes = []
     permission_classes = [AllowAny]
     serializer_class = EventSerializer
-    queryset = Event.objects.all().order_by('from_date')
+    queryset = Event.objects.all()
     pagination_class = pagination.PageNumberPagination
 
     def get_serializer_class(self):

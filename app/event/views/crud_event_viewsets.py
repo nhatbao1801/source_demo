@@ -137,13 +137,15 @@ class EventCRUDViewSet(
         else:
             now = datetime.today().isoformat()
             _queryset = _queryset.filter(to_date__gte=now)
+            _queryset = _queryset.order_by('-from_date')
         if formality_id:
             _queryset = _queryset.filter(formality_id=formality_id)
         if privacy_id:
             _queryset = _queryset.filter(privacy_id=privacy_id)
         if business_level_code:
             _queryset = _queryset.filter(business_level_code=business_level_code)
-        _queryset = _queryset.order_by('from_date')
+        if not date_out:
+            _queryset = _queryset.order_by('from_date')
         data, metadata = s_paginator(object_list=_queryset, request=request)
         data_serializer = _serializer(data, many=True, context={'request': request}).data
         return JsonResponse(

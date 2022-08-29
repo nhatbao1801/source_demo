@@ -272,8 +272,12 @@ class InviteEventAPI(APIView):
     )
     def post(self, request, *args, **kwargs):
         try:
+            _flag_has_owner = False
             event = Event.objects.get(id=request.data.get('event_id'))
-            if request.data.get('uid') == event.owner:
+            for _uid in request.data.get('uid'):
+                if _uid == event.owner:
+                    _flag_has_owner = True
+            if _flag_has_owner and len(request.data.get('uid') == 1):
                 return Response(data={"message": "Không thể mời owner của event này"}, status=status.HTTP_400_BAD_REQUEST)
         except Event.DoesNotExist:
             return Response(data={"Missing param event_id"}, status=status.HTTP_400_BAD_REQUEST)
@@ -281,7 +285,7 @@ class InviteEventAPI(APIView):
         participants = []
         event_id = request.data.get('event_id')
         for uid in request.data.get('uid'):
-            if EventParticipant.objects.filter(event_id=event_id, uid=uid, inviter_id=request.data.get('inviter_id')).count() <= 0:
+            if EventParticipant.objects.filter(event_id=event_id, uid=uid, inviter_id=request.data.get('inviter_id')).count() <= 0 and uid != event.owner:
                 participants.append(EventParticipant(event_id=event_id, uid=uid, inviter_id=request.data.get('inviter_id'), stage='INVITED'))
         if len(participants) <= 0:
             return Response(data={"message": "Uids đã được mời vào rồi"}, status=status.HTTP_400_BAD_REQUEST)

@@ -34,7 +34,7 @@ class EventCRUDViewSet(
     authentication_classes = []
     permission_classes = [AllowAny]
     serializer_class = EventSerializer
-    queryset = Event.objects.all().order_by('-from_date')
+    queryset = Event.objects.all()
     pagination_class = pagination.PageNumberPagination
 
     def get_serializer_class(self):
@@ -129,17 +129,22 @@ class EventCRUDViewSet(
         if is_host:
             _queryset = _queryset.filter(owner=uid)
         if is_joined:
-            _queryset = _queryset.filter(Q(eventparticipant__uid=uid), Q(stage="JOINED"))
+            _queryset = _queryset.filter(Q(eventparticipant__uid=uid), Q(eventparticipant__stage="JOINED"))
+
         if date_out:
             now = datetime.today().isoformat()
             _queryset = _queryset.filter(to_date__lt=now)
+            _queryset = _queryset.order_by('-to_date')
+        else:
+            now = datetime.today().isoformat()
+            _queryset = _queryset.filter(to_date__gte=now)
+            _queryset = _queryset.order_by('from_date')
         if formality_id:
             _queryset = _queryset.filter(formality_id=formality_id)
         if privacy_id:
             _queryset = _queryset.filter(privacy_id=privacy_id)
         if business_level_code:
             _queryset = _queryset.filter(business_level_code=business_level_code)
-        _queryset = _queryset.order_by('-from_date')
         data, metadata = s_paginator(object_list=_queryset, request=request)
         data_serializer = _serializer(data, many=True, context={'request': request}).data
         return JsonResponse(
@@ -269,16 +274,20 @@ class InviteEventAPI(APIView):
     def post(self, request, *args, **kwargs):
         try:
             event = Event.objects.get(id=request.data.get('event_id'))
-            if request.data.get('uid') == event.owner:
-                return Response(data={"message": "Không thể mời owner của event này"}, status=status.HTTP_400_BAD_REQUEST)
         except Event.DoesNotExist:
             return Response(data={"Missing param event_id"}, status=status.HTTP_400_BAD_REQUEST)
 
+        _flag_has_owner = False
         participants = []
         event_id = request.data.get('event_id')
         for uid in request.data.get('uid'):
-            if EventParticipant.objects.filter(event_id=event_id, uid=uid, inviter_id=request.data.get('inviter_id')).count() <= 0:
+            if uid == event.owner:
+                    _flag_has_owner = True
+            if EventParticipant.objects.filter(event_id=event_id, uid=uid, inviter_id=request.data.get('inviter_id')).count() <= 0 and uid != event.owner:
                 participants.append(EventParticipant(event_id=event_id, uid=uid, inviter_id=request.data.get('inviter_id'), stage='INVITED'))
+
+        if _flag_has_owner and len(request.data.get('uid')) == 1:
+                return Response(data={"message": "Không thể mời owner của event này"}, status=status.HTTP_400_BAD_REQUEST)
         if len(participants) <= 0:
             return Response(data={"message": "Uids đã được mời vào rồi"}, status=status.HTTP_400_BAD_REQUEST)
         EventParticipant.objects.bulk_create(participants)

@@ -350,10 +350,10 @@ class EventStatisticsAPI(APIView):
         passed_event = events.filter(to_date__lt=now)
         event_passed_count = passed_event.count()
         participants = EventParticipant.objects.filter(created_at__gte=from_date, created_at__lte=to_day).count()
-
+        event_disable_count = events.filter(is_disable=True).count()
         # TODO: event_report_count
+        event_report_count = 0
         if overview:
-            event_report_count = 0
             _data = {
                 "event_count": event_count,
                 "event_passed_count": event_passed_count,
@@ -362,8 +362,8 @@ class EventStatisticsAPI(APIView):
             }
         elif report:
             _data = {
-                "event_report_count": event_count,
-                "event_disable_count": event_passed_count,
+                "event_delinquent_count": event_count,
+                "event_disable_count": event_disable_count,
                 "event_report_count": event_report_count
             }
         return Response(data={"data": _data}, status=status.HTTP_200_OK)

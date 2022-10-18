@@ -1,5 +1,6 @@
 import logging
-from datetime import datetime
+import datetime
+from dateutil.relativedelta import *
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
@@ -132,11 +133,11 @@ class EventCRUDViewSet(
             _queryset = _queryset.filter(Q(eventparticipant__uid=uid), Q(eventparticipant__stage="JOINED"))
 
         if date_out:
-            now = datetime.today().isoformat()
+            now = datetime.datetime.today().isoformat()
             _queryset = _queryset.filter(to_date__lt=now)
             _queryset = _queryset.order_by('-to_date')
         else:
-            now = datetime.today().isoformat()
+            now = datetime.datetime.today().isoformat()
             _queryset = _queryset.filter(to_date__gte=now)
             _queryset = _queryset.order_by('from_date')
         if formality_id:
@@ -315,19 +316,56 @@ class EventStatisticsAPI(APIView):
         }
     )
     def get(self, request, *args, **kwargs):
-        events = Event.objects.all()
+        overview = request.query_params.get('overview')
+        report = request.query_params.get('report')
+        choice = request.query_params.get('choice')
+        date_from = request.query_params.get('date_from')
+        date_to = request.query_params.get('date_to')
+
+        _data = {}
+        use_date = datetime.datetime.now()
+        to_day = use_date + datetime.timedelta(days=-1)
+        from_date = use_date + datetime.timedelta(days=-1)
+        if choice == "PASS_DAY":
+            to_day = use_date + datetime.timedelta(days=-1)
+        elif choice == "ONE_WEEK":
+            from_date = use_date + datetime.timedelta(weeks=-1)
+        elif choice == "ONE_MONTH":
+            from_date = use_date + relativedelta(months=-1)
+        elif choice == "TWO_MONTH":
+            from_date = use_date + relativedelta(months=-2)
+            # If date_from -> replace from_date to date_from( user input)
+
+        if date_from:
+            from_date = date_from
+        if date_to:
+            to_day = date_to
+
+
+
+        events = Event.objects.filter(created_at__gte=from_date, created_at__lte=to_day)
         event_count = events.count()
 
-        now = datetime.today().isoformat()
+        now = datetime.datetime.today().isoformat()
         passed_event = events.filter(to_date__lt=now)
         event_passed_count = passed_event.count()
+        participants = EventParticipant.objects.filter(created_at__gte=from_date, created_at__lte=to_day).count()
 
-        participants = EventParticipant.objects.count()
-        _data = {
-            "event_count": event_count,
-            "event_passed_count": event_passed_count,
-            "event_member_count": participants
-        }
+        # TODO: event_report_count
+        if overview:
+            event_report_count = 0
+            _data = {
+                "event_count": event_count,
+                "event_passed_count": event_passed_count,
+                "event_member_count": participants,
+                "event_report_count": event_report_count
+            }
+        elif report:
+            _data = {
+                "event_report_count": event_count,
+                "event_disable_count": event_passed_count,
+                "event_report_count": event_report_count
+            }
         return Response(data={"data": _data}, status=status.HTTP_200_OK)
 
 

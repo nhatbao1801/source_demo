@@ -19,7 +19,9 @@ class Event(BaseModel):
     event_type = models.ForeignKey(to='event.EventType', blank=True, on_delete=models.CASCADE, null=True)
     business_level_code = models.CharField(max_length=300, blank=True, null=True, help_text='Business Level Code')
     link_online = models.CharField(max_length=300, blank=True, null=True, help_text='Link online')
-    
+    is_disable = models.BooleanField(default=False)
+    disabled_by = models.CharField(max_length=255, help_text='Người disable sự kiện', blank=True, null=True)
+
 
     class Meta:
         db_table = 'event'

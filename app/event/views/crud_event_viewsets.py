@@ -9,7 +9,7 @@ from drf_yasg.utils import swagger_auto_schema
 from event.serializers.event_participant_serializer import EventListInviteSchema
 from event.models.event_participant import EventParticipant
 from event.models.event import Event
-from event.serializers.event_serializer import (EventSerializer,
+from event.serializers.event_serializer import (EventDisableRequestSchema, EventSerializer,
                                                 EventSerializerOut)
 from rest_framework import mixins, pagination, status, viewsets
 from rest_framework.permissions import AllowAny
@@ -17,6 +17,7 @@ from utils.base_class_schema_pagination import PaginatorInspectorClass
 from utils.paginator import s_paginator
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.decorators import action
 from django.db.models import Q
 
 logger = logging.getLogger(__name__)
@@ -30,7 +31,7 @@ logger.addHandler(stream_handler)
 
 class EventCRUDViewSet(
         mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.ListModelMixin, 
-        mixins.UpdateModelMixin, mixins.DestroyModelMixin,viewsets.GenericViewSet
+        mixins.UpdateModelMixin, mixins.DestroyModelMixin,viewsets.GenericViewSet, viewsets.ViewSet
     ):
     authentication_classes = []
     permission_classes = [AllowAny]
@@ -108,6 +109,7 @@ class EventCRUDViewSet(
         is_invited = self.request.GET.get('is_invited')
         is_host = self.request.GET.get('is_host')
         is_joined = self.request.GET.get('is_joined')
+        is_all = self.request.GET.get('is_all')
         date_out = self.request.GET.get('date_out')
         uid = self.request.GET.get('uid')
         formality_id = self.request.GET.get('formality_id')
@@ -131,11 +133,12 @@ class EventCRUDViewSet(
             _queryset = _queryset.filter(owner=uid)
         if is_joined:
             _queryset = _queryset.filter(Q(eventparticipant__uid=uid), Q(eventparticipant__stage="JOINED"))
-
         if date_out:
             now = datetime.datetime.today().isoformat()
             _queryset = _queryset.filter(to_date__lt=now)
             _queryset = _queryset.order_by('-to_date')
+        elif is_all:
+            pass
         else:
             now = datetime.datetime.today().isoformat()
             _queryset = _queryset.filter(to_date__gte=now)
@@ -190,6 +193,22 @@ class EventCRUDViewSet(
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         self.perform_destroy(instance)
+        return JsonResponse(
+            data={
+                'status': 'HTTP_200_OK',
+                'msg': 'Success'
+            }, status=status.HTTP_200_OK
+        )
+
+    @swagger_auto_schema(
+        operation_summary='Hủy sự kiện', tags=['event'],
+        request_body=EventDisableRequestSchema
+    )
+    @action(methods=['post'], url_path='(?P<pk>\d+)/disable', detail=False)
+    def disable(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.is_disable = True
+        instance.save()
         return JsonResponse(
             data={
                 'status': 'HTTP_200_OK',

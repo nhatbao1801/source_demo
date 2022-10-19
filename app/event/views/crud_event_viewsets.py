@@ -116,7 +116,9 @@ class EventCRUDViewSet(
         privacy_id = self.request.GET.get('privacy_id')
         business_level_code = self.request.GET.get('business_level_code')
 
-        _queryset = Event.objects.filter()
+        _queryset = Event.objects.filter(is_disable=False)
+        if is_all:
+            _queryset = Event.objects.filter()
         if not is_host:
             _queryset = _queryset.filter(~Q(privacy__code="PRIVATE"))
         if search:
@@ -207,7 +209,10 @@ class EventCRUDViewSet(
     @action(methods=['post'], url_path='(?P<pk>\d+)/disable', detail=False)
     def disable(self, request, *args, **kwargs):
         instance = self.get_object()
-        instance.is_disable = True
+        if instance.is_disable == True:
+            instance.is_disable = False
+        else:
+            instance.is_disable = True
         instance.save()
         return JsonResponse(
             data={

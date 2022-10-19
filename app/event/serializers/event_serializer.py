@@ -1,5 +1,5 @@
 import requests
-from datetime import datetime
+import datetime
 from account.serializers.ref_account_serializer import RefAccountSerializerOut
 from drf_yasg.utils import swagger_serializer_method
 from account.models.account import RefAccount
@@ -34,11 +34,38 @@ class EventSerializerOut(serializers.ModelSerializer):
     is_form_submited = serializers.SerializerMethodField('check_form_submited')
     event_participant_count = serializers.SerializerMethodField('count_event_participant_count')
     rating_avg = serializers.SerializerMethodField('get_rating_avg')
+    # add new
+    # is_disable = serializers.SerializerMethodField('is_disable')
+    is_pass = serializers.SerializerMethodField('get_is_pass')
+    is_onboard = serializers.SerializerMethodField('get_is_onboard')
+    is_incoming = serializers.SerializerMethodField('get_is_incoming')
+    c_invite = serializers.SerializerMethodField('get_c_invite')
 
     class Meta:
         model = Event
-        fields = ['id','is_owner', 'is_joined', 'owner_info', 'name', 'cover', 'venue', 'tagline', 'description', 'short_description', 'from_date', 'to_date', 'users_interested_in_info', 'privacy_info', 'co_host_info', 'formality_info', 'event_type_info', 'event_participant_info', 'business_level_code', 'link_online', 'is_form_submited', 'event_participant_count', 'out_date', 'rating_avg']
+        fields = ['id','is_owner', 'is_disable', 'c_invite', 'is_pass', 'is_onboard', 'is_incoming', 'is_joined', 'created_at','owner_info', 'name', 'cover', 'venue', 'tagline', 'description', 'short_description', 'from_date', 'to_date', 'users_interested_in_info', 'privacy_info', 'co_host_info', 'formality_info', 'event_type_info', 'event_participant_info', 'business_level_code', 'link_online', 'is_form_submited', 'event_participant_count', 'out_date', 'rating_avg']
     
+    def get_c_invite(self, instance):
+        return EventParticipant.objects.filter(event_id=instance.id, stage="INVITED").count()
+
+    def get_is_pass(self, instance):
+        now = datetime.datetime.today().isoformat()
+        if str(instance.to_date) < now:
+            return True
+        return False
+    
+    def get_is_onboard(self, instance):
+        now = datetime.datetime.today().isoformat()
+        if str(instance.from_date) <= now <= str(instance.to_date):
+            return True
+        return False
+    
+    def get_is_incoming(self, instance):
+        now = datetime.datetime.today().isoformat()
+        if str(instance.from_date) > now:
+            return True
+        return False
+
     def get_rating_avg(self, inst):
         return get_rating_avg_form(target_id=inst.id)
 
@@ -54,7 +81,7 @@ class EventSerializerOut(serializers.ModelSerializer):
             return check_user_submited_form(target_id=inst.id, uid=uid)
 
     def check_date_out(self, inst):
-        now = datetime.today().timestamp()
+        now = datetime.datetime.today().timestamp()
         # format = "%Y-%m-%d %H:%M:%S"
         # inst_to_day = datetime.strptime(str(inst.to_date), format)
         return inst.to_date.timestamp() < now
@@ -148,3 +175,9 @@ class EventSerializerOut(serializers.ModelSerializer):
             if profile:
                 participants.append(profile)
         return participants
+
+
+class EventDisableRequestSchema(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+        fields = ['id']

@@ -3,11 +3,11 @@ version: '3.7'
 services:
   web:
     build: ./app
-    command: python manage.py runserver 0.0.0.0:8010
+    command: python manage.py runserver 0.0.0.0:8004
     volumes:
       - ./app/:/usr/src/app
     ports:
-      - 8010:8010
+      - 8004:8004
     expose:
-      - 8010
+      - 8004
     env_file: .env

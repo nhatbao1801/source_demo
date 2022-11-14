@@ -90,8 +90,10 @@ class EventSerializerOut(serializers.ModelSerializer):
         blcode = None
         if not instance.business_level_code:
             return blcode
-        return get_business_level_code_detail(bl_code=instance.business_level_code)
-
+        try:
+            return get_business_level_code_detail(bl_code=instance.business_level_code)
+        except Exception as e:
+            print(f"Error: {e} at Event: {instance.id}")
     def get_is_owner(self, instance):
         request = None
         if self.context.get('request'):

@@ -101,7 +101,7 @@ def get_rating_avg_form(target_id:str):
     try:
         is_submited = requests.get(f"{_url}/target-evaluation?target_id={target_id}").json()
         if is_submited and is_submited.get('data'):
-            return is_submited.get('data').get('rating')
+            return is_submited.get('data').get('rating') if is_submited.get('data').get('rating') else 0
     except Exception as e:
         print("ERROR: ", e.__str__())
-        return False
+        return 0

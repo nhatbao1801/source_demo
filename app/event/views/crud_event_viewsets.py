@@ -137,7 +137,7 @@ class EventCRUDViewSet(
             _queryset = _queryset.filter(Q(eventparticipant__uid=uid), Q(eventparticipant__stage="JOINED"))
         if date_out:
             now = datetime.datetime.today().isoformat()
-            _queryset = _queryset.filter(to_date__lt=now)
+            _queryset = _queryset.filter(Q(to_date__lt=now), Q(eventparticipant__uid=uid))
             _queryset = _queryset.order_by('-to_date')
         elif is_all:
             pass

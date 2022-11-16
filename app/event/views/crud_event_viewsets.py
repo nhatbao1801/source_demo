@@ -118,7 +118,7 @@ class EventCRUDViewSet(
 
         _queryset = Event.objects.filter(is_disable=False)
         if is_all:
-            _queryset = Event.objects.filter()
+            _queryset = Event.objects.filter(~Q(owner=uid))
         if not is_host:
             _queryset = _queryset.filter(~Q(privacy__code="PRIVATE"))
         if search:

@@ -116,9 +116,9 @@ class EventCRUDViewSet(
         privacy_id = self.request.GET.get('privacy_id')
         business_level_code = self.request.GET.get('business_level_code')
 
-        _queryset = Event.objects.filter(Q(is_disable=False), ~Q(owner__id=uid))
+        _queryset = Event.objects.filter(Q(is_disable=False), ~Q(owner=uid))
         if is_all:
-            _queryset = Event.objects.filter(~Q(owner__id=uid))
+            _queryset = Event.objects.filter(~Q(owner=uid))
         if not is_host:
             _queryset = _queryset.filter(~Q(privacy__code="PRIVATE"))
         if search:

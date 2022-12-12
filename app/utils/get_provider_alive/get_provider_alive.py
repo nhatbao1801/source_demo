@@ -36,11 +36,14 @@ def get_service_from_registry_service(service_name=None):
     consul_host = configuration.registry_host
     consul_port = configuration.registry_port
     consul_dns_port = configuration.registry_dns_port
-    host = get_service_from_registry_service_by_dns(registry_host=consul_host, registry_port=consul_dns_port, service_name=service_name)
+    # host = get_service_from_registry_service_by_dns(registry_host=consul_host, registry_port=consul_dns_port, service_name=service_name)
     url = f"http://{consul_host}:{consul_port}/v1/agent/service/{service_name}" 
     res = requests.get(url) 
     res = json.loads(res.text)
-    return f"http://{host}:{res['Port']}"
+    # if host is None:
+    #     host = configuration.address
+    return f"http://{res['Address']}:{res['Port']}"
+
 
 
 # def get_profile_provider():
